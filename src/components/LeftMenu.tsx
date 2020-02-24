@@ -11,7 +11,6 @@ type StyleProps = {
 
 const LeftSideMenu: React.FC<Props> = ({ leftMenuOpen, setLeftMenuOpen }: Props) => {
   //
-
   useEffect(() => {
     if (!leftMenuOpen) return;
     window.addEventListener('keydown', handleUserKeyPress);
@@ -26,7 +25,6 @@ const LeftSideMenu: React.FC<Props> = ({ leftMenuOpen, setLeftMenuOpen }: Props)
       }
     }
   }, [leftMenuOpen, setLeftMenuOpen]);
-
   const closeLeftMenu = (e: React.MouseEvent) => {
     setLeftMenuOpen(false);
   };
