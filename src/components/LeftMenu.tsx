@@ -51,9 +51,10 @@ const LeftMenuContainer = styled.div<StyleProps>`
     transform: ${({ leftMenuOpen }) => (leftMenuOpen ? 'translateX(0)' : 'translateX(-100%)')};
     display: flex;
     flex-direction: row;
+    background: black;
+    opacity: 0.6;
   }
-  background: black;
-  opacity: 0.6;
+
   grid-area: left;
 `;
 
@@ -62,6 +63,10 @@ const LeftMenuContent = styled.div`
     width: 60%;
     margin-top: 55px;
   }
+  @media (min-width: 600px) {
+    height: 100%;
+  }
+
   width: 240px;
   background: pink;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.28);

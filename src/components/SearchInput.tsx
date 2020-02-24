@@ -1,13 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 
+import { useDebounce } from '../hooks/useDebounce';
 import SearchIcon from '../assets/Icons/SearchIcon';
+import CancelIcon from '../assets/Icons/CancelIcon';
 
 const SearchInput = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(() => {
+    // TODO: API CALL
+  }, [debouncedSearchTerm]);
+
+  useEffect(() => {
+    if (searchTerm.length <= 0) return;
+    window.addEventListener('keydown', handleUserKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress);
+    };
+
+    function handleUserKeyPress(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setSearchTerm('');
+      }
+    }
+  }, [searchTerm]);
+
+  const handleSearchTerm = (e: React.FormEvent<HTMLInputElement>) => {
+    setSearchTerm(e.currentTarget.value);
+  };
+
   return (
     <StyledSearchInputContainer>
-      <SearchIcon></SearchIcon>
-      <StyledSearchInput></StyledSearchInput>
+      {searchTerm.length > 0 ? <CancelIcon></CancelIcon> : <SearchIcon></SearchIcon>}
+      <StyledSearchInput onChange={e => handleSearchTerm(e)} value={searchTerm}></StyledSearchInput>
     </StyledSearchInputContainer>
   );
 };
