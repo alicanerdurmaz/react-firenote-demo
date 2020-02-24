@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import styled, { ThemeProvider } from 'styled-components/macro';
+import { GlobalStyles } from './styles/GlobalStyles';
+import { lightTheme, darkTheme } from './styles/theme';
 
-import './App.css';
+import Layout from './components/Layout';
 
 function App() {
-  return <div className='App'>hello</div>;
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <Fragment>
+        <GlobalStyles />
+        <AppContainer>
+          <Layout></Layout>
+        </AppContainer>
+      </Fragment>
+    </ThemeProvider>
+  );
 }
+const AppContainer = styled.div`
+  text-align: center;
+  height: 100vh;
+`;
 
 export default App;
