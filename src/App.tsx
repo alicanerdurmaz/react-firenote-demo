@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components/macro';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { lightTheme, darkTheme } from './styles/theme';
@@ -22,4 +23,4 @@ const AppContainer = styled.div`
   height: 100vh;
 `;
 
-export default App;
+export default process.env.NODE_ENV === 'development' ? hot(App) : App;

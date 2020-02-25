@@ -22,7 +22,7 @@ const SearchInput = () => {
 
     function handleUserKeyPress(e: KeyboardEvent) {
       if (e.key === 'Escape') {
-        setSearchTerm('');
+        resetSearchTerm();
       }
     }
   }, [searchTerm]);
@@ -31,27 +31,38 @@ const SearchInput = () => {
     setSearchTerm(e.currentTarget.value);
   };
 
+  const resetSearchTerm = () => {
+    setSearchTerm('');
+  };
+
   return (
     <StyledSearchInputContainer>
-      {searchTerm.length > 0 ? <CancelIcon></CancelIcon> : <SearchIcon></SearchIcon>}
-      <StyledSearchInput onChange={e => handleSearchTerm(e)} value={searchTerm}></StyledSearchInput>
+      <StyledSearchInput
+        onChange={e => handleSearchTerm(e)}
+        value={searchTerm}
+        placeholder='Search your notes'></StyledSearchInput>
+      {searchTerm.length > 0 && (
+        <span onClick={resetSearchTerm}>
+          <CancelIcon></CancelIcon>
+        </span>
+      )}
     </StyledSearchInputContainer>
   );
 };
 
 const StyledSearchInputContainer = styled.div`
   display: flex;
-  background: ${props => props.theme.backgroundColorsecondary};
-  border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 4px;
+  padding: 4px 0px;
   margin-left: 16px;
-  margin-right: 16px;
+  width: 100%;
 `;
 const StyledSearchInput = styled.input`
   font-size: 16px;
   width: 100%;
-  margin-left: 8px;
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    user-select: none;
+  }
 `;
 
 export default SearchInput;

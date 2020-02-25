@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 
 import BarsIcon from '../assets/Icons/BarsIcon';
-import SearchIcon from '../assets/Icons/SearchIcon';
-import SettingsIcon from '../assets/Icons/SettingsIcon';
 import SearchInput from './SearchInput';
 
 type Props = {
@@ -12,31 +10,29 @@ type Props = {
 const Navbar = ({ setLeftMenuOpen }: Props) => {
   return (
     <NavbarContainer>
-      <GroupOne>
+      <StyledPanel>
         <BarsButton onClick={e => setLeftMenuOpen(old => !old)}>
           <BarsIcon></BarsIcon>
         </BarsButton>
-        <BrandName>
-          <span>FireNote</span>
-        </BrandName>
-      </GroupOne>
-
-      <GroupTwo>
         <SearchInput></SearchInput>
-        <SettingsButton>
-          <SettingsIcon></SettingsIcon>
-        </SettingsButton>
-      </GroupTwo>
+      </StyledPanel>
     </NavbarContainer>
   );
 };
 
 const NavbarContainer = styled.div`
+  grid-area: nav;
+  padding: 8px 8px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.borderColor};
-  grid-area: nav;
-  padding: 16px 8px;
+`;
+const StyledPanel = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: ${props => props.theme.backgroundColorSecondary};
 `;
 
 const BrandName = styled.div`
@@ -53,27 +49,10 @@ const BrandName = styled.div`
   }
 `;
 
-const SettingsButton = styled.div`
-  height: 100%;
-  display: inline-block;
-  margin-right: 8px;
-`;
-const SearchButton = styled.div``;
 const BarsButton = styled.div`
   @media (min-width: 600px) {
     visibility: hidden;
   }
-`;
-
-const GroupOne = styled.div`
-  flex: 1;
-  display: flex;
-`;
-const GroupTwo = styled.div`
-  flex: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export default Navbar;

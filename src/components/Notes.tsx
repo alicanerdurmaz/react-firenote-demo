@@ -6,7 +6,8 @@ const NoteList = () => {
 };
 
 const NoteListContainer = styled.div`
-  grid-area: notes;
+  height: 100%;
+  flex: 1;
 `;
 
 export default NoteList;

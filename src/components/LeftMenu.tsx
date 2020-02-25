@@ -45,7 +45,7 @@ const LeftMenuContainer = styled.div<StyleProps>`
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 100;
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
     transform-origin: 1px;
     transform: ${({ leftMenuOpen }) => (leftMenuOpen ? 'translateX(0)' : 'translateX(-100%)')};
