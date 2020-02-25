@@ -3,28 +3,21 @@ import styled from 'styled-components/macro';
 import LeftMenu from './LeftMenu';
 import Notes from './Notes';
 import Navbar from './Navbar';
-import TakeNote from './TakeNote';
-import AddNoteButton from './AddNoteButton';
 
-const Layout = () => {
+const MainPage = () => {
   const [leftMenuOpen, setLeftMenuOpen] = useState(false);
-  const [addNoteAreaOpen, setAddNoteAreaOpen] = useState(false);
   return (
-    <LayoutContainer>
-      {addNoteAreaOpen && (
-        <TakeNote addNoteAreaOpen={addNoteAreaOpen} setAddNoteAreaOpen={setAddNoteAreaOpen}></TakeNote>
-      )}
-      <AddNoteButton setAddNoteAreaOpen={setAddNoteAreaOpen}></AddNoteButton>
+    <StyledMainPage>
       <Navbar setLeftMenuOpen={setLeftMenuOpen}></Navbar>
       <LeftMenu leftMenuOpen={leftMenuOpen} setLeftMenuOpen={setLeftMenuOpen}></LeftMenu>
       <NotesArea>
         <Notes></Notes>
       </NotesArea>
-    </LayoutContainer>
+    </StyledMainPage>
   );
 };
 
-const LayoutContainer = styled.div`
+const StyledMainPage = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -40,4 +33,4 @@ const NotesArea = styled.div`
   flex-direction: column;
 `;
 
-export default Layout;
+export default MainPage;

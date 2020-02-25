@@ -1,11 +1,18 @@
 import { createGlobalStyle } from 'styled-components/macro';
-export const GlobalStyles = createGlobalStyle<{ theme: any }>`
 
+
+export const GlobalStyles = createGlobalStyle<{ theme: any }>`
 html,
 body {
   margin: 0;
   padding: 0;
+  
+  min-height:100vh;  
   height: 100vh;
+  
+  min-height: calc(var(--vh, 1vh) * 100);  
+  height: calc(var(--vh, 1vh) * 100);
+
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
 }
 
@@ -20,6 +27,7 @@ body {
   text-rendering: optimizeLegibility;
   align-items: center;
   background: ${props => props.theme.backgroundColor};
+  
 }
 ol,
 ul {
@@ -36,5 +44,11 @@ input{
 		outline:none;
 	}
 	font-family: Open Sans ;
+}
+textarea{
+	border-style: none;
+	border-color: Transparent;
+	overflow: auto;
+	outline: none;
 }
 `;
