@@ -50,5 +50,10 @@ textarea{
 	border-color: Transparent;
 	overflow: auto;
 	outline: none;
+	line-height: 24px;
+}
+button:focus,
+select:focus {
+  outline: none;
 }
 `;
