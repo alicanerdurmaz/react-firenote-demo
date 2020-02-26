@@ -1,13 +1,12 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useContext } from 'react';
 import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components/macro';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { lightTheme, darkTheme } from './styles/theme';
 import RouteController from './components/RouteController';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
-  //
-
   useEffect(() => {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -23,14 +22,16 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Fragment>
-        <GlobalStyles />
-        <AppContainer>
-          <RouteController></RouteController>
-        </AppContainer>
-      </Fragment>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={darkTheme}>
+        <Fragment>
+          <GlobalStyles />
+          <AppContainer>
+            <RouteController></RouteController>
+          </AppContainer>
+        </Fragment>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 const AppContainer = styled.div`

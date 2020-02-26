@@ -3,11 +3,13 @@ import styled from 'styled-components/macro';
 import LeftMenu from './LeftMenu';
 import Notes from './Notes';
 import Navbar from './Navbar';
+import AddNoteButton from './AddNoteButton';
 
 const MainPage = () => {
   const [leftMenuOpen, setLeftMenuOpen] = useState(false);
   return (
     <StyledMainPage>
+      <AddNoteButton></AddNoteButton>
       <Navbar setLeftMenuOpen={setLeftMenuOpen}></Navbar>
       <LeftMenu leftMenuOpen={leftMenuOpen} setLeftMenuOpen={setLeftMenuOpen}></LeftMenu>
       <NotesArea>

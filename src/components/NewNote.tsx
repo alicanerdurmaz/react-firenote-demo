@@ -1,8 +1,16 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components/macro';
 import TextareaAutosize from 'react-textarea-autosize';
+import { Link, useHistory } from 'react-router-dom';
+import * as ROUTES from '../helpers/PageList';
 
 const NewNote = () => {
+  let history = useHistory();
+
+  const cancelHandler = () => {
+    history.push(ROUTES.MAIN);
+  };
+
   return (
     <TakeNoteContainer>
       <InputArea>
@@ -16,7 +24,7 @@ const NewNote = () => {
       <BottomBar>
         <ButtonGroup>
           <SaveButton>SAVE</SaveButton>
-          <CancelButton>CANCEL</CancelButton>
+          <CancelButton onClick={cancelHandler}>CANCEL</CancelButton>
         </ButtonGroup>
       </BottomBar>
     </TakeNoteContainer>
@@ -71,7 +79,6 @@ const BottomBar = styled.div`
 `;
 
 const ButtonGroup = styled.div`
-  margin-right: 8px;
   flex: 0.4;
   display: flex;
   justify-content: space-evenly;
