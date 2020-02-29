@@ -6,7 +6,6 @@ import '../styles/animations/PageAnimation.css';
 
 import NewNote from './NewNote';
 import MainPage from './MainPage';
-import AddNoteButton from './AddNoteButton';
 import Login from './Login';
 import * as ROUTES from '../helpers/PageList';
 import PrivateRoute from './PrivateRoute';
@@ -21,9 +20,7 @@ const RouteController = () => {
           <RouteSection>
             <Switch location={location}>
               <PrivateRoute exact path={ROUTES.MAIN} component={MainPage} />
-              <PrivateRoute exact path={ROUTES.NEW_NOTE} component={NewNote} />
               <Route exact path={ROUTES.LOGIN} component={Login} />
-
               <Route>
                 <div>404</div>
               </Route>

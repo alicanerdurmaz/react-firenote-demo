@@ -1,17 +1,19 @@
-import React, { Fragment, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components/macro';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Link, useHistory } from 'react-router-dom';
-import * as ROUTES from '../helpers/PageList';
 import firebase, { firestore } from '../components/Firebase/firebase';
 import { useAuthContext } from '../context/AuthContext';
 import SelectColorPanel from './SelectColorPanel';
+import SelectTagPanel from './SelectTagPanel';
 
-const NewNote = () => {
+type Props = {
+  setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const NewNote = ({ setShowNewNoteModal }: Props) => {
   const themeContext = useContext(ThemeContext);
 
   const { currentUser } = useAuthContext();
-  let history = useHistory();
+
   const [note, setNote] = useState({
     title: '',
     content: '',
@@ -20,7 +22,7 @@ const NewNote = () => {
   });
 
   const cancelHandler = () => {
-    history.push(ROUTES.MAIN);
+    setShowNewNoteModal(false);
   };
 
   const newNoteController = () => {
@@ -63,45 +65,58 @@ const NewNote = () => {
       color: colorCode
     }));
   };
-  console.log(note);
+
   return (
-    <TakeNoteContainer>
-      <InputArea>
-        <TitleInput>
-          <TextareaAutosize
-            maxLength={30}
-            maxRows={2}
-            placeholder='Title'
-            onChange={e => newNoteInput(e)}
-            name='title'></TextareaAutosize>
-        </TitleInput>
-        <ContentInput>
-          <TextareaAutosize
-            maxLength={999}
-            maxRows={8}
-            placeholder='Take a note...'
-            onChange={e => newNoteInput(e)}
-            name='content'></TextareaAutosize>
-        </ContentInput>
-      </InputArea>
-      <BottomBar>
-        <ButtonGroupOne>
-          <SelectColorPanel selectedColorProp={note.color} selectColor={selectColor}></SelectColorPanel>
-        </ButtonGroupOne>
-        <ButtonGroupTwo>
-          <SaveButton onClick={newNoteController}>SAVE</SaveButton>
-          <CancelButton onClick={cancelHandler}>CANCEL</CancelButton>
-        </ButtonGroupTwo>
-      </BottomBar>
-    </TakeNoteContainer>
+    <Modal>
+      <TakeNoteContainer>
+        <InputArea>
+          <TitleInput>
+            <TextareaAutosize
+              maxLength={30}
+              maxRows={2}
+              placeholder='Title'
+              onChange={e => newNoteInput(e)}
+              name='title'></TextareaAutosize>
+          </TitleInput>
+          <ContentInput>
+            <TextareaAutosize
+              maxLength={999}
+              maxRows={8}
+              placeholder='Take a note...'
+              onChange={e => newNoteInput(e)}
+              name='content'></TextareaAutosize>
+          </ContentInput>
+        </InputArea>
+        <BottomBar>
+          <ButtonGroupOne>
+            <SelectTagPanel></SelectTagPanel>
+            <SelectColorPanel selectedColorProp={note.color} selectColor={selectColor}></SelectColorPanel>
+          </ButtonGroupOne>
+          <ButtonGroupTwo>
+            <SaveButton onClick={newNoteController}>SAVE</SaveButton>
+            <CancelButton onClick={cancelHandler}>CANCEL</CancelButton>
+          </ButtonGroupTwo>
+        </BottomBar>
+      </TakeNoteContainer>
+    </Modal>
   );
 };
+
+const Modal = styled.section`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+`;
 
 const TakeNoteContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   justify-content: space-between;
+  background: ${props => props.theme.backgroundColor};
   height: 100%;
   width: 100%;
 `;
@@ -189,19 +204,4 @@ const CancelButton = styled.button`
   }
 `;
 
-const StyledTagsIcon = styled.div`
-  margin-top: 2px;
-  cursor: pointer;
-  &:active {
-    transform: scale(0.9);
-  }
-`;
-const StyledPaletteIcon = styled.div`
-  margin-top: 2px;
-  cursor: pointer;
-  fill: red;
-  &:active {
-    transform: scale(0.9);
-  }
-`;
 export default NewNote;

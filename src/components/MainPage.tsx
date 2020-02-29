@@ -4,12 +4,15 @@ import LeftMenu from './LeftMenu';
 import Notes from './Notes';
 import Navbar from './Navbar';
 import AddNoteButton from './AddNoteButton';
+import NewNote from './NewNote';
 
 const MainPage = () => {
   const [leftMenuOpen, setLeftMenuOpen] = useState(false);
+  const [showNewNoteModal, setShowNewNoteModal] = useState(false);
   return (
     <StyledMainPage>
-      <AddNoteButton></AddNoteButton>
+      {showNewNoteModal && <NewNote setShowNewNoteModal={setShowNewNoteModal}></NewNote>}
+      {!showNewNoteModal && <AddNoteButton setShowNewNoteModal={setShowNewNoteModal}></AddNoteButton>}
       <Navbar setLeftMenuOpen={setLeftMenuOpen}></Navbar>
       <LeftMenu leftMenuOpen={leftMenuOpen} setLeftMenuOpen={setLeftMenuOpen}></LeftMenu>
       <NotesArea>

@@ -37,6 +37,7 @@ const SelectColorPanel = ({ selectColor, selectedColorProp }: Props) => {
 };
 
 const Details = styled.details`
+  cursor: pointer;
   display: inline-block;
   position: relative;
   &[open] > summary:before {

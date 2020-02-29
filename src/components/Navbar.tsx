@@ -50,6 +50,7 @@ const BrandName = styled.div`
 `;
 
 const BarsButton = styled.div`
+  cursor: pointer;
   @media (min-width: 600px) {
     visibility: hidden;
   }
