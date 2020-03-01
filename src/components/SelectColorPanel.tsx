@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PaletteIcon from '../assets/Icons/PaletteIcon';
-import styled from 'styled-components/macro';
+import styled, { ThemeContext } from 'styled-components/macro';
 
 type Props = {
   selectColor: (color: string) => void;
@@ -11,6 +11,7 @@ type StyledProps = {
 };
 
 const SelectColorPanel = ({ selectColor, selectedColorProp }: Props) => {
+  const themeContext = useContext(ThemeContext);
   return (
     <Details>
       <Summary>
@@ -18,7 +19,11 @@ const SelectColorPanel = ({ selectColor, selectedColorProp }: Props) => {
       </Summary>
       <HiddenPanel>
         <CircleContainer>
-          <Circle color='default' onClick={e => selectColor('default')} selectedColor={selectedColorProp} />
+          <Circle
+            color={themeContext.backgroundColor}
+            onClick={e => selectColor(themeContext.backgroundColor)}
+            selectedColor={selectedColorProp}
+          />
           <Circle color='#5c2b29' onClick={e => selectColor('#5c2b29')} selectedColor={selectedColorProp} />
           <Circle color='#614a19' onClick={e => selectColor('#614a19')} selectedColor={selectedColorProp} />
           <Circle color='#635d19' onClick={e => selectColor('#635d19')} selectedColor={selectedColorProp} />
@@ -37,6 +42,7 @@ const SelectColorPanel = ({ selectColor, selectedColorProp }: Props) => {
 };
 
 const Details = styled.details`
+  -webkit-tap-highlight-color: transparent;
   cursor: pointer;
   display: inline-block;
   position: relative;
@@ -97,13 +103,13 @@ const Circle = styled.div<StyledProps>`
       const selected = props.selectedColor;
       const color = props.color;
       if (color === selected) {
-        return props.theme.textColor;
+        return props.theme.textColorPrimary;
       } else {
         return 'transparent';
       }
     }};
   :hover {
-    border: 2px solid ${props => props.theme.textColor};
+    border: 2px solid ${props => props.theme.textColorPrimary};
   }
 `;
 export default SelectColorPanel;

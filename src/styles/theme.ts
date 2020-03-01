@@ -1,5 +1,5 @@
 export const lightTheme = {
-	textColor: "#202124",
+	textColorSecondary: "#202124",
 	textColorPrimary: "#000000",
 	backgroundColor: "#ffffff",
 	backgroundColorSecondary: "#f1f3f4",
@@ -10,8 +10,8 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
-	textColorPrimary: "#ffffff",
-	textColor: "#e8eaed",
+	textColorPrimary: "#e8eaed",
+	textColorSecondary: "#ffffff",
 	backgroundColor: "#202124",
 	backgroundColorSecondary: "#2E2F33",
 	iconColor: "rgba(255, 255, 255, 0.87)",

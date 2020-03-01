@@ -36,7 +36,7 @@ const StyledPanel = styled.div`
 `;
 
 const BrandName = styled.div`
-  color: ${props => props.theme.textColor};
+  color: ${props => props.theme.textColorPrimary};
   font-family: 'Montserrat';
   font-size: 22px;
   text-align: center;

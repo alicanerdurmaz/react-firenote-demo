@@ -35,7 +35,7 @@ ul {
 }
 
 input{
-	color:${props => props.theme.textColor};
+	color:${props => props.theme.textColorPrimary};
 	background-color:inherit;
 	border-width: 0px;
     border-style: none;
@@ -45,6 +45,8 @@ input{
 	}
 	font-family: Open Sans ;
 }
+
+
 textarea{
 	border-style: none;
 	border-color: Transparent;
@@ -56,4 +58,9 @@ button:focus,
 select:focus {
   outline: none;
 }
+
+*:focus:not(.focus-visible) {
+  outline: none;
+}
+
 `;

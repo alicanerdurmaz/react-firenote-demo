@@ -9,18 +9,27 @@ import SelectTagPanel from './SelectTagPanel';
 type Props = {
   setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
+type styleProps = {
+  bgColor: string;
+};
+
+interface INotes {
+  title: string;
+  content: string;
+  tags: string[];
+  color: string;
+}
+
 const NewNote = ({ setShowNewNoteModal }: Props) => {
   const themeContext = useContext(ThemeContext);
-
   const { currentUser } = useAuthContext();
-
-  const [note, setNote] = useState({
+  const [note, setNote] = useState<INotes>({
     title: '',
     content: '',
-    labels: [],
+    tags: [],
     color: themeContext.backgroundColor
   });
-
+  console.log(note);
   const cancelHandler = () => {
     setShowNewNoteModal(false);
   };
@@ -36,7 +45,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
         .add({
           title: note.title,
           content: note.content,
-          labels: note.labels,
+          tags: note.tags,
           color: note.color,
           lastEdited: firebase.firestore.FieldValue.serverTimestamp(),
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -65,12 +74,17 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
       color: colorCode
     }));
   };
-
+  const addTag = (list: string[]) => {
+    setNote(prevState => ({
+      ...prevState,
+      tags: list
+    }));
+  };
   return (
     <Modal>
-      <TakeNoteContainer>
+      <TakeNoteContainer bgColor={note.color}>
         <InputArea>
-          <TitleInput>
+          <TitleInput bgColor={note.color}>
             <TextareaAutosize
               maxLength={30}
               maxRows={2}
@@ -78,7 +92,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
               onChange={e => newNoteInput(e)}
               name='title'></TextareaAutosize>
           </TitleInput>
-          <ContentInput>
+          <ContentInput bgColor={note.color}>
             <TextareaAutosize
               maxLength={999}
               maxRows={8}
@@ -89,7 +103,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
         </InputArea>
         <BottomBar>
           <ButtonGroupOne>
-            <SelectTagPanel></SelectTagPanel>
+            <SelectTagPanel addTag={addTag}></SelectTagPanel>
             <SelectColorPanel selectedColorProp={note.color} selectColor={selectColor}></SelectColorPanel>
           </ButtonGroupOne>
           <ButtonGroupTwo>
@@ -111,17 +125,17 @@ const Modal = styled.section`
   z-index: 99;
 `;
 
-const TakeNoteContainer = styled.div`
+const TakeNoteContainer = styled.div<styleProps>`
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   justify-content: space-between;
-  background: ${props => props.theme.backgroundColor};
+  background: ${props => props.bgColor};
   height: 100%;
   width: 100%;
 `;
 
-const TitleInput = styled.div`
+const TitleInput = styled.div<styleProps>`
   padding: 16px;
   overflow: hidden;
   padding-bottom: 8px;
@@ -129,12 +143,12 @@ const TitleInput = styled.div`
     resize: none;
     width: 100%;
     height: auto;
-    background: ${props => props.theme.backgroundColor};
+    background: ${props => props.bgColor};
     color: ${props => props.theme.textColorPrimary};
     font-size: 16px;
   }
 `;
-const ContentInput = styled.div`
+const ContentInput = styled.div<styleProps>`
   padding: 16px;
   overflow: hidden;
   padding-top: 8px;
@@ -142,7 +156,7 @@ const ContentInput = styled.div`
     resize: none;
     font-size: 16px;
     width: 100%;
-    background: ${props => props.theme.backgroundColor};
+    background: ${props => props.bgColor};
     color: ${props => props.theme.textColorPrimary};
   }
 `;
