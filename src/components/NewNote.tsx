@@ -5,6 +5,7 @@ import firebase, { firestore } from '../components/Firebase/firebase';
 import { useAuthContext } from '../context/AuthContext';
 import SelectColorPanel from './SelectColorPanel';
 import SelectTagPanel from './SelectTagPanel';
+import { firestoreAddNote } from '../context/FirebaseContext/firestoreFunctions';
 
 type Props = {
   setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,7 +30,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
     tags: [],
     color: themeContext.backgroundColor
   });
-  console.log(note);
+
   const cancelHandler = () => {
     setShowNewNoteModal(false);
   };
@@ -40,22 +41,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
     } else if (note.title.length < 1 || note.content.length < 1) {
       return;
     } else {
-      firestore
-        .collection(currentUser.uid)
-        .add({
-          title: note.title,
-          content: note.content,
-          tags: note.tags,
-          color: note.color,
-          lastEdited: firebase.firestore.FieldValue.serverTimestamp(),
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(function(docRef) {
-          console.log('Document written with ID: ', docRef.id);
-        })
-        .catch(function(error) {
-          console.error('Error adding document: ', error);
-        });
+      firestoreAddNote(currentUser.uid, note);
     }
   };
 
@@ -95,15 +81,25 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
           <ContentInput bgColor={note.color}>
             <TextareaAutosize
               maxLength={999}
-              maxRows={8}
+              maxRows={6}
               placeholder='Take a note...'
               onChange={e => newNoteInput(e)}
               name='content'></TextareaAutosize>
           </ContentInput>
+          <TagListContainer>
+            {note.tags.map(e => {
+              return (
+                <TagTextContainer key={e}>
+                  <TagText>{e}</TagText>
+                </TagTextContainer>
+              );
+            })}
+          </TagListContainer>
         </InputArea>
+
         <BottomBar>
           <ButtonGroupOne>
-            <SelectTagPanel addTag={addTag}></SelectTagPanel>
+            <SelectTagPanel addTag={addTag} userId={currentUser.uid}></SelectTagPanel>
             <SelectColorPanel selectedColorProp={note.color} selectColor={selectColor}></SelectColorPanel>
           </ButtonGroupOne>
           <ButtonGroupTwo>
@@ -136,9 +132,8 @@ const TakeNoteContainer = styled.div<styleProps>`
 `;
 
 const TitleInput = styled.div<styleProps>`
-  padding: 16px;
+  padding: 8px 8px;
   overflow: hidden;
-  padding-bottom: 8px;
   textarea {
     resize: none;
     width: 100%;
@@ -149,9 +144,9 @@ const TitleInput = styled.div<styleProps>`
   }
 `;
 const ContentInput = styled.div<styleProps>`
-  padding: 16px;
+  padding: 8px 8px;
+  padding-top: 0px;
   overflow: hidden;
-  padding-top: 8px;
   textarea {
     resize: none;
     font-size: 16px;
@@ -176,14 +171,16 @@ const BottomBar = styled.div`
 const ButtonGroupOne = styled.div`
   align-self: flex-start;
   flex: 0.2;
+  padding-left: 16px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 `;
 const ButtonGroupTwo = styled.div`
   align-self: flex-end;
-  flex: 0.3;
+  flex: 0.4;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  margin-right: 8px;
 `;
 
 const SaveButton = styled.button`
@@ -216,6 +213,35 @@ const CancelButton = styled.button`
   &:active {
     transform: scale(0.9);
   }
+`;
+
+const TagListContainer = styled.div`
+  cursor: pointer;
+  margin: 4px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-tap-highlight-color: transparent;
+`;
+const TagTextContainer = styled.div`
+  user-select: none;
+  min-width: 35px;
+  height: 18px;
+  box-shadow: inset 0 0 0 1px rgba(154, 160, 166, 0.541);
+  padding: 3px 6px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px 2px;
+`;
+const TagText = styled.div`
+  user-select: none;
+  color: ${props => props.theme.textColorSecondary};
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 20px;
 `;
 
 export default NewNote;

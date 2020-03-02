@@ -5,6 +5,7 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import { lightTheme, darkTheme } from './styles/theme';
 import RouteController from './components/RouteController';
 import { AuthProvider } from './context/AuthContext';
+import { FirestoreProvider } from './context/FirebaseContext/FirestoreContext';
 
 function App() {
   useEffect(() => {
@@ -23,14 +24,16 @@ function App() {
 
   return (
     <AuthProvider>
-      <ThemeProvider theme={darkTheme}>
-        <Fragment>
-          <GlobalStyles />
-          <AppContainer>
-            <RouteController></RouteController>
-          </AppContainer>
-        </Fragment>
-      </ThemeProvider>
+      <FirestoreProvider>
+        <ThemeProvider theme={darkTheme}>
+          <Fragment>
+            <GlobalStyles />
+            <AppContainer>
+              <RouteController></RouteController>
+            </AppContainer>
+          </Fragment>
+        </ThemeProvider>
+      </FirestoreProvider>
     </AuthProvider>
   );
 }

@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import TagsIcon from '../assets/Icons/TagsIcon';
+import { firestoreAddTag } from '../context/FirebaseContext/firestoreFunctions';
 
 type Props = {
   addTag: (list: string[]) => void;
+  userId: string;
 };
 
-const SelectTagPanel = ({ addTag }: Props) => {
+const SelectTagPanel = ({ addTag, userId }: Props) => {
   const [tagInputText, setTagInputText] = useState('');
   const [checkedTags, setCheckedTags] = useState<string[]>([]);
 
@@ -35,8 +37,12 @@ const SelectTagPanel = ({ addTag }: Props) => {
   };
 
   const createTagHandler = () => {
-    tags.current.add(tagInputText);
+    firestoreAddTag(userId, tagInputText);
     setTagInputText('');
+  };
+
+  const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.focus();
   };
 
   return (
@@ -47,6 +53,7 @@ const SelectTagPanel = ({ addTag }: Props) => {
       <HiddenPanel>
         <TagInputContainer>
           <TagInput
+            onBlur={e => onBlurHandler(e)}
             maxLength={24}
             placeholder='Enter a tag or search'
             value={tagInputText}
@@ -55,7 +62,7 @@ const SelectTagPanel = ({ addTag }: Props) => {
 
         <SavedTagsContainer>
           <SavedTagsList>
-            {Array.from(tags.current).map(e => (
+            {/* {Array.from(tagList.current).map(e => (
               <SavedTagsListItem key={e}>
                 <CheckboxContainer>
                   <Checkbox type='checkbox' id={e} name={e} value={e} onChange={e => checkBoxHandler(e)}></Checkbox>
@@ -64,7 +71,7 @@ const SelectTagPanel = ({ addTag }: Props) => {
                   </Label>
                 </CheckboxContainer>
               </SavedTagsListItem>
-            ))}
+            ))} */}
           </SavedTagsList>
         </SavedTagsContainer>
 
@@ -92,6 +99,7 @@ const Divider = styled.div`
   margin-bottom: 4px;
 `;
 const Details = styled.details`
+  -webkit-tap-highlight-color: transparent;
   cursor: pointer;
   display: inline-block;
   position: relative;
@@ -109,6 +117,7 @@ const Details = styled.details`
   }
 `;
 const Summary = styled.summary`
+  -webkit-tap-highlight-color: transparent;
   ::-webkit-details-marker {
     display: none;
   }
@@ -116,8 +125,10 @@ const Summary = styled.summary`
   list-style: none;
   user-select: none;
   outline: none;
+  margin-right: 16px;
 `;
 const HiddenPanel = styled.div`
+  -webkit-tap-highlight-color: transparent;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   background-color: ${props => props.theme.backgroundColorSecondary};
   border-radius: 4px;
@@ -139,6 +150,7 @@ const TagInput = styled.input`
 `;
 
 const CreateTagContainer = styled.div`
+  -webkit-tap-highlight-color: transparent;
   display: flex;
   align-content: center;
   align-items: center;
@@ -146,6 +158,7 @@ const CreateTagContainer = styled.div`
   padding: 4px 0px;
 `;
 const CreateTagText = styled.div`
+  -webkit-tap-highlight-color: transparent;
   user-select: none;
   div {
     height: max-content;
