@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import PaletteIcon from '../assets/Icons/PaletteIcon';
+import PaletteIcon from '../../assets/Icons/PaletteIcon';
 import styled, { ThemeContext } from 'styled-components/macro';
 
 type Props = {

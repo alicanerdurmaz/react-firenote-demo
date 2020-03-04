@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components/macro';
 import TextareaAutosize from 'react-textarea-autosize';
-import firebase, { firestore } from '../components/Firebase/firebase';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import SelectColorPanel from './SelectColorPanel';
 import SelectTagPanel from './SelectTagPanel';
-import { firestoreAddNote } from '../context/FirebaseContext/firestoreFunctions';
+import { firestoreAddNote } from '../../context/FirebaseContext/firestoreFunctions';
+import NewNoteInput from './NewNoteInput';
 
 type Props = {
   setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,17 +14,18 @@ type styleProps = {
   bgColor: string;
 };
 
-interface INotes {
+type Notes = {
   title: string;
   content: string;
   tags: string[];
   color: string;
-}
+};
 
 const NewNote = ({ setShowNewNoteModal }: Props) => {
   const themeContext = useContext(ThemeContext);
   const { currentUser } = useAuthContext();
-  const [note, setNote] = useState<INotes>({
+
+  const [note, setNote] = useState<Notes>({
     title: '',
     content: '',
     tags: [],
@@ -35,7 +36,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
     setShowNewNoteModal(false);
   };
 
-  const newNoteController = () => {
+  const saveNoteToFirebase = () => {
     if (!currentUser) {
       return;
     } else if (note.title.length < 1 || note.content.length < 1) {
@@ -43,15 +44,6 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
     } else {
       firestoreAddNote(currentUser.uid, note);
     }
-  };
-
-  const newNoteInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setNote(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
   };
 
   const selectColor = (colorCode: string) => {
@@ -66,26 +58,12 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
       tags: list
     }));
   };
+
   return (
     <Modal>
       <TakeNoteContainer bgColor={note.color}>
-        <InputArea>
-          <TitleInput bgColor={note.color}>
-            <TextareaAutosize
-              maxLength={30}
-              maxRows={2}
-              placeholder='Title'
-              onChange={e => newNoteInput(e)}
-              name='title'></TextareaAutosize>
-          </TitleInput>
-          <ContentInput bgColor={note.color}>
-            <TextareaAutosize
-              maxLength={999}
-              maxRows={6}
-              placeholder='Take a note...'
-              onChange={e => newNoteInput(e)}
-              name='content'></TextareaAutosize>
-          </ContentInput>
+        <div>
+          <NewNoteInput color={note.color} setNote={setNote}></NewNoteInput>
           <TagListContainer>
             {note.tags.map(e => {
               return (
@@ -95,15 +73,14 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
               );
             })}
           </TagListContainer>
-        </InputArea>
-
+        </div>
         <BottomBar>
           <ButtonGroupOne>
             <SelectTagPanel addTag={addTag} userId={currentUser.uid}></SelectTagPanel>
             <SelectColorPanel selectedColorProp={note.color} selectColor={selectColor}></SelectColorPanel>
           </ButtonGroupOne>
           <ButtonGroupTwo>
-            <SaveButton onClick={newNoteController}>SAVE</SaveButton>
+            <SaveButton onClick={saveNoteToFirebase}>SAVE</SaveButton>
             <CancelButton onClick={cancelHandler}>CANCEL</CancelButton>
           </ButtonGroupTwo>
         </BottomBar>
@@ -128,35 +105,6 @@ const TakeNoteContainer = styled.div<styleProps>`
   justify-content: space-between;
   background: ${props => props.bgColor};
   height: 100%;
-  width: 100%;
-`;
-
-const TitleInput = styled.div<styleProps>`
-  padding: 8px 8px;
-  overflow: hidden;
-  textarea {
-    resize: none;
-    width: 100%;
-    height: auto;
-    background: ${props => props.bgColor};
-    color: ${props => props.theme.textColorPrimary};
-    font-size: 16px;
-  }
-`;
-const ContentInput = styled.div<styleProps>`
-  padding: 8px 8px;
-  padding-top: 0px;
-  overflow: hidden;
-  textarea {
-    resize: none;
-    font-size: 16px;
-    width: 100%;
-    background: ${props => props.bgColor};
-    color: ${props => props.theme.textColorPrimary};
-  }
-`;
-
-const InputArea = styled.div`
   width: 100%;
 `;
 

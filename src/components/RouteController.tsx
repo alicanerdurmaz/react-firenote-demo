@@ -4,7 +4,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import styled from 'styled-components/macro';
 import '../styles/animations/PageAnimation.css';
 
-import NewNote from './NewNote';
+import NewNote from './NewNote/NewNote';
 import MainPage from './MainPage';
 import Login from './Login';
 import * as ROUTES from '../helpers/PageList';

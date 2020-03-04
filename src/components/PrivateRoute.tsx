@@ -9,7 +9,7 @@ interface Props extends RouteProps {
 const PrivateRoute: React.FC<Props> = ({ component: RouteComponent, ...rest }) => {
   const { currentUser } = useAuthContext();
 
-  return <Route {...rest} render={routeProps => (true ? <RouteComponent /> : <Redirect to={'/login'} />)} />;
+  return <Route {...rest} render={routeProps => (currentUser ? <RouteComponent /> : <Redirect to={'/login'} />)} />;
 };
 
 export default PrivateRoute;

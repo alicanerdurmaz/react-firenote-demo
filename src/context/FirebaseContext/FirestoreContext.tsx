@@ -1,22 +1,34 @@
-import React, { useState, createContext, useEffect, useContext } from 'react';
+import React, { useState, createContext, useEffect, useContext, useReducer } from 'react';
 import { firestore } from '../../components/Firebase/firebase';
 import { useAuthContext } from '../AuthContext';
 
-const FirestoreContext = createContext<any | undefined>(undefined);
+type INoteContext = {
+  notesList: INote[];
+  tagsList: string[];
+};
 
-type Note = {
+type INote = {
   uid: string;
   color: string;
   content: string;
-  createdAt: firebase.firestore.FieldValue;
-  lastEdited: firebase.firestore.FieldValue;
+  createdAt: Date;
+  lastEdited: Date;
   tags: string[];
   title: string;
 };
+type INoteContextReducerAction = {
+  type: 'added' | 'modified' | 'removed';
+  payload: {
+    data: firebase.firestore.DocumentData;
+    id: string;
+  };
+};
+
+export const FirestoreContext = createContext<INoteContext | undefined>(undefined);
 
 export const FirestoreProvider: React.FC = props => {
   const { currentUser } = useAuthContext();
-  const [notesList, setNoteList] = useState<Note[]>([]);
+  const [notesList, dispatchNoteList] = useReducer(noteListReducer, []);
   const [tagsList, setTagsList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -28,13 +40,33 @@ export const FirestoreProvider: React.FC = props => {
       .onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
           if (change.type === 'added') {
-            console.log('added: ', change.doc.data(), change.doc.id);
+            dispatchNoteList({
+              type: 'added',
+              payload: {
+                data: change.doc.data(),
+                id: change.doc.id
+              }
+            });
           }
           if (change.type === 'modified') {
-            console.log('modified: ', change.doc.data(), change.doc.id);
+            // dispatchNoteList({
+            //   type: 'modified',
+            //   payload: {
+            //     data: change.doc.data(),
+            //     id: change.doc.id
+            //   }
+            // });
+            console.log(change.doc.data(), change.doc.id);
           }
           if (change.type === 'removed') {
-            console.log('removed: ', change.doc.data(), change.doc.id);
+            console.log(change.doc.data(), change.doc.id);
+            // dispatchNoteList({
+            //   type: 'removed',
+            //   payload: {
+            //     data: change.doc.data(),
+            //     id: change.doc.id
+            //   }
+            // });
           }
         });
       });
@@ -42,15 +74,15 @@ export const FirestoreProvider: React.FC = props => {
       .collection(currentUser.uid)
       .doc('tags')
       .onSnapshot(function(doc) {
-        console.log('Current data: ', doc.data());
+        if (doc.data()?.tagList) setTagsList(doc.data()?.tagList);
       });
     return () => {
       unsubscribeNoteList();
       unsubscribeTagsList();
     };
   }, [currentUser]);
-
-  return <FirestoreContext.Provider value={{ notesList }}>{props.children}</FirestoreContext.Provider>;
+  console.log(notesList);
+  return <FirestoreContext.Provider value={{ notesList, tagsList }}>{props.children}</FirestoreContext.Provider>;
 };
 
 export const useFirebaseContext = () => {
@@ -60,3 +92,18 @@ export const useFirebaseContext = () => {
   }
   return context;
 };
+
+function noteListReducer(state: INote[], action: INoteContextReducerAction): INote[] {
+  switch (action.type) {
+    case 'added':
+      const newNote = action.payload.data as INote;
+      newNote.uid = action.payload.id;
+      return [...state, newNote];
+    case 'modified':
+      return state;
+    case 'removed':
+      return state;
+    default:
+      return state;
+  }
+}

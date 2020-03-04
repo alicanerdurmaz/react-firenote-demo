@@ -5,7 +5,6 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import { lightTheme, darkTheme } from './styles/theme';
 import RouteController from './components/RouteController';
 import { AuthProvider } from './context/AuthContext';
-import { FirestoreProvider } from './context/FirebaseContext/FirestoreContext';
 
 function App() {
   useEffect(() => {
@@ -21,19 +20,16 @@ function App() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
-
   return (
     <AuthProvider>
-      <FirestoreProvider>
-        <ThemeProvider theme={darkTheme}>
-          <Fragment>
-            <GlobalStyles />
-            <AppContainer>
-              <RouteController></RouteController>
-            </AppContainer>
-          </Fragment>
-        </ThemeProvider>
-      </FirestoreProvider>
+      <ThemeProvider theme={darkTheme}>
+        <Fragment>
+          <GlobalStyles />
+          <AppContainer>
+            <RouteController></RouteController>
+          </AppContainer>
+        </Fragment>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

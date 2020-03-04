@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import TagsIcon from '../assets/Icons/TagsIcon';
-import { firestoreAddTag } from '../context/FirebaseContext/firestoreFunctions';
+import TagsIcon from '../../assets/Icons/TagsIcon';
+import { firestoreAddTag } from '../../context/FirebaseContext/firestoreFunctions';
+import { useFirebaseContext } from '../../context/FirebaseContext/FirestoreContext';
 
 type Props = {
   addTag: (list: string[]) => void;
@@ -9,6 +10,8 @@ type Props = {
 };
 
 const SelectTagPanel = ({ addTag, userId }: Props) => {
+  const { tagsList } = useFirebaseContext();
+
   const [tagInputText, setTagInputText] = useState('');
   const [checkedTags, setCheckedTags] = useState<string[]>([]);
 
@@ -38,7 +41,6 @@ const SelectTagPanel = ({ addTag, userId }: Props) => {
 
   const createTagHandler = () => {
     firestoreAddTag(userId, tagInputText);
-    setTagInputText('');
   };
 
   const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -62,16 +64,21 @@ const SelectTagPanel = ({ addTag, userId }: Props) => {
 
         <SavedTagsContainer>
           <SavedTagsList>
-            {/* {Array.from(tagList.current).map(e => (
-              <SavedTagsListItem key={e}>
-                <CheckboxContainer>
-                  <Checkbox type='checkbox' id={e} name={e} value={e} onChange={e => checkBoxHandler(e)}></Checkbox>
-                  <Label htmlFor={e}>
-                    <span>{e}</span>
-                  </Label>
-                </CheckboxContainer>
-              </SavedTagsListItem>
-            ))} */}
+            {tagsList.map(e => {
+              if (!e.includes(tagInputText)) {
+                return null;
+              }
+              return (
+                <SavedTagsListItem key={e}>
+                  <CheckboxContainer>
+                    <Checkbox type='checkbox' id={e} name={e} value={e} onChange={e => checkBoxHandler(e)}></Checkbox>
+                    <Label htmlFor={e}>
+                      <span>{e}</span>
+                    </Label>
+                  </CheckboxContainer>
+                </SavedTagsListItem>
+              );
+            })}
           </SavedTagsList>
         </SavedTagsContainer>
 
@@ -239,6 +246,7 @@ const Label = styled.label`
   }
   span {
     margin-left: 22px;
+    padding-top: 3px;
   }
 `;
 const Checkbox = styled.input.attrs({ type: 'checkbox' })`
