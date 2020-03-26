@@ -4,7 +4,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useAuthContext } from '../../context/AuthContext';
 import SelectColorPanel from './SelectColorPanel';
 import SelectTagPanel from './SelectTagPanel';
-import { firestoreAddNote } from '../../context/FirebaseContext/firestoreFunctions';
+import { firestoreAddNote } from '../../context/NoteContext/firestoreFunctions';
 import NewNoteInput from './NewNoteInput';
 
 type Props = {

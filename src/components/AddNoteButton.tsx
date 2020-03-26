@@ -29,12 +29,15 @@ const AddNoteButton = ({ setShowNewNoteModal }: Props) => {
   );
 };
 const StyledAddNoteButtonContainer = styled.div`
-  position: absolute;
+  position: sticky;
   width: 40px;
   height: 40px;
   bottom: 16px;
-  right: 16px;
+  left: 100%;
+  margin-right: 16px;
   z-index: 5;
+  background: ${props => props.theme.backgroundColor};
+  border-radius: 50%;
 `;
 const Fab = styled.div`
   position: relative;
@@ -46,7 +49,7 @@ const Fab = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.16), 0px 1px 4px rgba(0, 0, 0, 0.16);
   -webkit-tap-highlight-color: transparent;
   @media (min-width: 600px) {
     &:hover {

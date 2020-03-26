@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import TagsIcon from '../../assets/Icons/TagsIcon';
-import { firestoreAddTag } from '../../context/FirebaseContext/firestoreFunctions';
-import { useFirebaseContext } from '../../context/FirebaseContext/FirestoreContext';
+import { firestoreAddTag } from '../../context/NoteContext/firestoreFunctions';
+import { useFirebaseContext } from '../../context/NoteContext/NoteContext';
 
 type Props = {
   addTag: (list: string[]) => void;

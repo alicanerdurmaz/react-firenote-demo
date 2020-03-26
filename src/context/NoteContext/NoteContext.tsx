@@ -1,34 +1,15 @@
 import React, { useState, createContext, useEffect, useContext, useReducer } from 'react';
 import { firestore } from '../../components/Firebase/firebase';
 import { useAuthContext } from '../AuthContext';
+import { INoteContext } from './noteTypes';
+import { noteListReducer, selectedTagListReducer } from './noteReducer';
 
-type INoteContext = {
-  notesList: INote[];
-  tagsList: string[];
-};
+export const NoteContext = createContext<INoteContext | undefined>(undefined);
 
-type INote = {
-  uid: string;
-  color: string;
-  content: string;
-  createdAt: Date;
-  lastEdited: Date;
-  tags: string[];
-  title: string;
-};
-type INoteContextReducerAction = {
-  type: 'added' | 'modified' | 'removed';
-  payload: {
-    data: firebase.firestore.DocumentData;
-    id: string;
-  };
-};
-
-export const FirestoreContext = createContext<INoteContext | undefined>(undefined);
-
-export const FirestoreProvider: React.FC = props => {
+export const NoteContextProvider: React.FC = props => {
   const { currentUser } = useAuthContext();
   const [notesList, dispatchNoteList] = useReducer(noteListReducer, []);
+  const [selectedTagList, dispatchSelectedTagList] = useReducer(selectedTagListReducer, []);
   const [tagsList, setTagsList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -37,6 +18,7 @@ export const FirestoreProvider: React.FC = props => {
       .collection(currentUser.uid)
       .doc('notes')
       .collection('notesCollection')
+      .orderBy('lastEdited', 'desc')
       .onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
           if (change.type === 'added') {
@@ -81,29 +63,18 @@ export const FirestoreProvider: React.FC = props => {
       unsubscribeTagsList();
     };
   }, [currentUser]);
-  console.log(notesList);
-  return <FirestoreContext.Provider value={{ notesList, tagsList }}>{props.children}</FirestoreContext.Provider>;
+
+  return (
+    <NoteContext.Provider value={{ notesList, tagsList, dispatchSelectedTagList }}>
+      {props.children}
+    </NoteContext.Provider>
+  );
 };
 
 export const useFirebaseContext = () => {
-  const context = useContext(FirestoreContext);
+  const context = useContext(NoteContext);
   if (context === undefined) {
     throw new Error('useCountState must be used within a CountProvider');
   }
   return context;
 };
-
-function noteListReducer(state: INote[], action: INoteContextReducerAction): INote[] {
-  switch (action.type) {
-    case 'added':
-      const newNote = action.payload.data as INote;
-      newNote.uid = action.payload.id;
-      return [...state, newNote];
-    case 'modified':
-      return state;
-    case 'removed':
-      return state;
-    default:
-      return state;
-  }
-}

@@ -11,7 +11,7 @@ export const lightTheme = {
 
 export const darkTheme = {
 	textColorPrimary: "#e8eaed",
-	textColorSecondary: "#ffffff",
+	textColorSecondary: "#9aa0a6",
 	backgroundColor: "#202124",
 	backgroundColorSecondary: "#2E2F33",
 	iconColor: "rgba(255, 255, 255, 0.87)",
