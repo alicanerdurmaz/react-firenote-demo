@@ -1,6 +1,7 @@
 export type INoteContext = {
 	notesList: INote[];
 	tagsList: string[];
+	selectedTagList: string[];
 	dispatchSelectedTagList: React.Dispatch<ISelectedTagListReducerAction>;
 }
 export type INote = {
@@ -21,14 +22,10 @@ export type INoteContextReducerAction = {
 	};
 };
 
-export type ISelectedTagList = {
-	tag: string;
-};
 
 export type ISelectedTagListReducerAction = {
-	type: 'added' | 'modified' | 'removed';
+	type: 'added' | 'modified' | 'removed' | 'cleared';
 	payload: {
-		data: firebase.firestore.DocumentData;
-		id: string;
+		tag: string;
 	};
 };

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import TagsIcon from '../../assets/Icons/TagsIcon';
 import { firestoreAddTag } from '../../context/NoteContext/firestoreFunctions';
-import { useFirebaseContext } from '../../context/NoteContext/NoteContext';
+import { useNoteContext } from '../../context/NoteContext/NoteContext';
 
 type Props = {
   addTag: (list: string[]) => void;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const SelectTagPanel = ({ addTag, userId }: Props) => {
-  const { tagsList } = useFirebaseContext();
+  const { tagsList } = useNoteContext();
 
   const [tagInputText, setTagInputText] = useState('');
   const [checkedTags, setCheckedTags] = useState<string[]>([]);

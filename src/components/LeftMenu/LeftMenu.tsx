@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { useFirebaseContext } from '../../context/NoteContext/NoteContext';
+import { useNoteContext } from '../../context/NoteContext/NoteContext';
 import TagListItem from './TagListItem';
 import LeftIcon from '../../assets/Icons/LeftIcon';
+import TagList from './TagList';
 
 type Props = {
   leftMenuOpen: boolean;
@@ -14,7 +15,7 @@ type StyleProps = {
 
 const LeftSideMenu: React.FC<Props> = ({ leftMenuOpen, setLeftMenuOpen }: Props) => {
   //
-  const { tagsList } = useFirebaseContext();
+
   useEffect(() => {
     if (!leftMenuOpen) return;
     window.addEventListener('keydown', handleUserKeyPress);
@@ -44,12 +45,7 @@ const LeftSideMenu: React.FC<Props> = ({ leftMenuOpen, setLeftMenuOpen }: Props)
             <LeftIcon width={22} height={22}></LeftIcon>
           </LeftIconContainer>
         </LeftMenuHeader>
-        <TagsList>
-          <span>TAGS</span>
-          {tagsList.map(e => {
-            return <TagListItem key={e} tagName={e}></TagListItem>;
-          })}
-        </TagsList>
+        <TagList></TagList>
       </LeftMenuContent>
     </LeftMenuContainer>
   );
@@ -68,8 +64,11 @@ const LeftMenuContainer = styled.div<StyleProps>`
     display: flex;
     flex-direction: row;
     background: rgba(0, 0, 0, 0.5);
+    padding-top: 0px;
   }
   grid-area: left;
+  padding-top: 8px;
+  width: 100%;
 `;
 
 const LeftMenuHeader = styled.div`
@@ -78,6 +77,9 @@ const LeftMenuHeader = styled.div`
   height: 36px;
   * {
     cursor: pointer;
+  }
+  @media (min-width: 600px) {
+    display: none;
   }
 `;
 const LeftIconContainer = styled.div`
@@ -92,38 +94,19 @@ const LeftIconContainer = styled.div`
 `;
 
 const LeftMenuContent = styled.div`
-  will-change: width;
   z-index: 99;
   opacity: 1;
   @media (max-width: 600px) {
+    will-change: width;
     width: 80%;
     opacity: 1;
     background: ${proprs => proprs.theme.backgroundColor};
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.4);
   }
-  @media (min-width: 600px) {
-    height: 100%;
-    opacity: 1;
-    background: ${proprs => proprs.theme.backgroundColor};
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.4);
-  }
-  width: 280px;
+
+  width: 100%;
   height: 100%;
   background: ${proprs => proprs.theme.backgroundColor};
-`;
-
-const TagsList = styled.div`
-  border-top: 1px solid ${props => props.theme.borderColor};
-  border-bottom: 1px solid ${props => props.theme.borderColor};
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 16px 0px;
-  span {
-    color: ${props => props.theme.textColorSecondary};
-    margin: 8px 0px 8px 17px;
-  }
 `;
 
 export default LeftSideMenu;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import LabelIcon from '../../assets/Icons/LabelIcon';
+import { useNoteContext } from '../../context/NoteContext/NoteContext';
 
 type Props = {
   tagName: string;
@@ -12,9 +13,25 @@ type StyledProps = {
 
 const TagListItem = ({ tagName }: Props) => {
   const [selected, setSelected] = useState(false);
-  console.log(tagName, selected);
+  const { dispatchSelectedTagList } = useNoteContext();
 
   const selectHandler = () => {
+    if (!selected) {
+      dispatchSelectedTagList({
+        type: 'added',
+        payload: {
+          tag: tagName
+        }
+      });
+    }
+    if (selected) {
+      dispatchSelectedTagList({
+        type: 'removed',
+        payload: {
+          tag: tagName
+        }
+      });
+    }
     setSelected(!selected);
   };
   return (
@@ -26,8 +43,7 @@ const TagListItem = ({ tagName }: Props) => {
     </StyledTagListItem>
   );
 };
-// background: ${props => (props.selected ? props.theme.backgroundColorSecondary : null)};
-// border-radius: ${props => (props.selected ? '0px 24px 24px 0px' : null)};
+
 export default TagListItem;
 
 const StyledTagListItem = styled.div<StyledProps>`
@@ -48,6 +64,7 @@ const ItemContainer = styled.div`
   margin: 8px 16px;
 `;
 const TagName = styled.div`
+  user-select: none;
   color: ${props => props.theme.textColorPrimary};
   font-weight: 600;
   margin: 3px 0 0 16px;

@@ -24,15 +24,18 @@ const MainPage = () => {
 };
 
 const StyledMainPage = styled.div`
-  height: 100%;
+  overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 285px 1fr;
   grid-template-rows: 55px 1fr;
   grid-template-areas: 'nav nav' 'left notes';
+  grid-column-gap: 16px;
+
   @media (max-width: 600px) {
-    grid-template-areas: 'nav nav' 'notes notes';
+    grid-template-areas: 'nav nav' 'notes notes' 'notes notes';
   }
-  grid-column-gap: 24px;
 `;
 
 export default MainPage;

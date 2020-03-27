@@ -29,18 +29,19 @@ const AddNoteButton = ({ setShowNewNoteModal }: Props) => {
   );
 };
 const StyledAddNoteButtonContainer = styled.div`
-  position: sticky;
+  position: absolute;
   width: 40px;
   height: 40px;
   bottom: 16px;
-  left: 100%;
+
+  right: 0;
   margin-right: 16px;
   z-index: 5;
   background: ${props => props.theme.backgroundColor};
   border-radius: 50%;
 `;
 const Fab = styled.div`
-  position: relative;
+  position: absolute;
   width: 40px;
   height: 40px;
   border-radius: 50%;

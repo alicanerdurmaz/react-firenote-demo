@@ -6,7 +6,10 @@ export const lightTheme = {
 	iconColor: "#202124",
 	iconColorSecondary: "#202124",
 	borderColor: "#e0e0e0",
-	warningColor: '#e84545'
+	warningColor: '#e84545',
+	colors: {
+		lightBlue: '#00a8cc'
+	}
 };
 
 export const darkTheme = {
@@ -17,6 +20,9 @@ export const darkTheme = {
 	iconColor: "rgba(255, 255, 255, 0.87)",
 	iconColorSecondary: "#98989a",
 	borderColor: "#5f6368",
-	warningColor: '#e84545'
+	warningColor: '#e84545',
+	colors: {
+		lightBlue: '#00a8cc'
+	}
 };
 

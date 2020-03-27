@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
-import { useFirebaseContext } from '../../context/NoteContext/NoteContext';
+import { useNoteContext } from '../../context/NoteContext/NoteContext';
 
 const Notes = () => {
-  const { notesList } = useFirebaseContext();
-  console.log(notesList);
+  const { notesList } = useNoteContext();
+
   return (
     <NotesArea>
       <NotesList>
@@ -18,6 +18,8 @@ const Notes = () => {
 };
 const NotesArea = styled.div`
   grid-area: notes;
+  overflow: auto;
+  overflow-x: hidden;
 `;
 const NotesList = styled.div`
   padding: 8px;

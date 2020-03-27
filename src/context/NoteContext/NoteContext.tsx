@@ -65,13 +65,13 @@ export const NoteContextProvider: React.FC = props => {
   }, [currentUser]);
 
   return (
-    <NoteContext.Provider value={{ notesList, tagsList, dispatchSelectedTagList }}>
+    <NoteContext.Provider value={{ notesList, tagsList, dispatchSelectedTagList, selectedTagList }}>
       {props.children}
     </NoteContext.Provider>
   );
 };
 
-export const useFirebaseContext = () => {
+export const useNoteContext = () => {
   const context = useContext(NoteContext);
   if (context === undefined) {
     throw new Error('useCountState must be used within a CountProvider');

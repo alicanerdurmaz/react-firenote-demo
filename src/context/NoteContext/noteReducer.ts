@@ -1,13 +1,19 @@
 import {
 	INoteContextReducerAction,
 	INote,
-	ISelectedTagList,
 	ISelectedTagListReducerAction
 } from './noteTypes';
 
 
-export function selectedTagListReducer(state: ISelectedTagList[], action: ISelectedTagListReducerAction): ISelectedTagList[] {
+
+export function selectedTagListReducer(state: string[], action: ISelectedTagListReducerAction): string[] {
 	switch (action.type) {
+		case "added":
+			return [...state, action.payload.tag];
+		case "removed":
+			return state.filter(e => e !== action.payload.tag);
+		case "cleared":
+			return [];
 		default:
 			return state;
 	}

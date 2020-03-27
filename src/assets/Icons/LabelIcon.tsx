@@ -18,7 +18,7 @@ const LabelIcon = ({ selected = false }) => {
 export const StyledLabelIcon = styled.svg<StyledProps>`
   width: 24px;
   height: 24px;
-  fill: ${props => (props.selected ? '#00a8cc' : props.theme.iconColorSecondary)};
+  fill: ${props => (props.selected ? props.theme.colors.lightBlue : props.theme.iconColorSecondary)};
 `;
 
 export default LabelIcon;
