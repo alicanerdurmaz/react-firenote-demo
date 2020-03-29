@@ -5,14 +5,14 @@ import { useNoteContext } from '../../context/NoteContext/NoteContext';
 
 type Props = {
   tagName: string;
+  selected: boolean;
 };
 
 type StyledProps = {
   selected: boolean;
 };
 
-const TagListItem = ({ tagName }: Props) => {
-  const [selected, setSelected] = useState(false);
+const TagListItem = ({ tagName, selected }: Props) => {
   const { dispatchSelectedTagList } = useNoteContext();
 
   const selectHandler = () => {
@@ -32,13 +32,12 @@ const TagListItem = ({ tagName }: Props) => {
         }
       });
     }
-    setSelected(!selected);
   };
   return (
     <StyledTagListItem onClick={selectHandler} selected={selected}>
       <ItemContainer>
         <LabelIcon selected={selected}></LabelIcon>
-        <TagName>{tagName}</TagName>
+        <TagName selected={selected}>{tagName}</TagName>
       </ItemContainer>
     </StyledTagListItem>
   );
@@ -50,7 +49,6 @@ const StyledTagListItem = styled.div<StyledProps>`
   width: 100%;
   cursor: pointer;
   display: flex;
-
   &:hover {
     background: ${props => props.theme.backgroundColorSecondary};
   }
@@ -59,13 +57,16 @@ const ItemContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  align-content: center;
+  justify-items: center;
   width: 100%;
   height: 100%;
-  margin: 8px 16px;
+  margin: 6px 8px;
 `;
-const TagName = styled.div`
+const TagName = styled.div<StyledProps>`
   user-select: none;
-  color: ${props => props.theme.textColorPrimary};
+  color: ${props => (props.selected ? props.theme.textColorPrimary : props.theme.textColorSecondary)};
   font-weight: 600;
-  margin: 3px 0 0 16px;
+  margin: 0px 0px 3px 8px;
+  font-family: 'Open Sans', sans-serif;
 `;

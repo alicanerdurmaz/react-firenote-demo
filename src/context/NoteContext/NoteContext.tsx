@@ -11,13 +11,22 @@ export const NoteContextProvider: React.FC = props => {
   const [notesList, dispatchNoteList] = useReducer(noteListReducer, []);
   const [selectedTagList, dispatchSelectedTagList] = useReducer(selectedTagListReducer, []);
   const [tagsList, setTagsList] = useState<string[]>([]);
-
+  console.log(notesList);
   useEffect(() => {
     if (!currentUser) return;
-    const unsubscribeNoteList = firestore
+
+    dispatchNoteList({ type: 'cleared', payload: { data: {}, id: 'test' } });
+    const notesCollectionRef = firestore
       .collection(currentUser.uid)
       .doc('notes')
-      .collection('notesCollection')
+      .collection('notesCollection');
+
+    const notesCollectionRefWithQuery =
+      selectedTagList.length > 0
+        ? notesCollectionRef.where('tags', 'array-contains-any', selectedTagList)
+        : notesCollectionRef;
+
+    const unsubscribeNoteList = notesCollectionRefWithQuery
       .orderBy('lastEdited', 'desc')
       .onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
@@ -31,24 +40,22 @@ export const NoteContextProvider: React.FC = props => {
             });
           }
           if (change.type === 'modified') {
-            // dispatchNoteList({
-            //   type: 'modified',
-            //   payload: {
-            //     data: change.doc.data(),
-            //     id: change.doc.id
-            //   }
-            // });
-            console.log(change.doc.data(), change.doc.id);
+            dispatchNoteList({
+              type: 'modified',
+              payload: {
+                data: change.doc.data(),
+                id: change.doc.id
+              }
+            });
           }
           if (change.type === 'removed') {
-            console.log(change.doc.data(), change.doc.id);
-            // dispatchNoteList({
-            //   type: 'removed',
-            //   payload: {
-            //     data: change.doc.data(),
-            //     id: change.doc.id
-            //   }
-            // });
+            dispatchNoteList({
+              type: 'removed',
+              payload: {
+                data: change.doc.data(),
+                id: change.doc.id
+              }
+            });
           }
         });
       });
@@ -62,7 +69,7 @@ export const NoteContextProvider: React.FC = props => {
       unsubscribeNoteList();
       unsubscribeTagsList();
     };
-  }, [currentUser]);
+  }, [currentUser, selectedTagList]);
 
   return (
     <NoteContext.Provider value={{ notesList, tagsList, dispatchSelectedTagList, selectedTagList }}>

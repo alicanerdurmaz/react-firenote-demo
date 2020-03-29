@@ -9,7 +9,7 @@ type StyledProps = {
 
 const TagList: React.FC = () => {
   const { selectedTagList, tagsList, dispatchSelectedTagList } = useNoteContext();
-  console.log('worked');
+
   return (
     <StyledTagList>
       <TagListHeader>
@@ -21,7 +21,7 @@ const TagList: React.FC = () => {
         </BtnClearSelected>
       </TagListHeader>
       {tagsList.map(e => {
-        return <TagListItem key={e} tagName={e}></TagListItem>;
+        return <TagListItem key={e} tagName={e} selected={selectedTagList.includes(e) ? true : false}></TagListItem>;
       })}
     </StyledTagList>
   );
@@ -48,13 +48,12 @@ const TagListHeader = styled.div`
 const TagsLabel = styled.div`
   user-select: none;
   color: ${props => props.theme.textColorSecondary};
-  margin: 0px 0px 0px 17px;
+  margin: 0px 0px 0px 11px;
   font-size: 11px;
   font-weight: 600;
 `;
 const BtnClearSelected = styled.div<StyledProps>`
   visibility: ${props => props.isHidden};
-  color: ${props => props.theme.textColorSecondary};
   font-size: 11px;
   font-weight: 600;
   margin-left: 8px;
@@ -66,7 +65,7 @@ const BtnClearSelected = styled.div<StyledProps>`
     background: ${props => props.theme.colors.lightBlue};
   }
   span {
-    color: ${props => props.theme.textColorPrimary};
+    color: ${props => props.theme.textColorPrimaryPale};
   }
 `;
 

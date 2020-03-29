@@ -15,9 +15,9 @@ export type INote = {
 };
 
 export type INoteContextReducerAction = {
-	type: 'added' | 'modified' | 'removed';
+	type: 'added' | 'modified' | 'removed' | 'cleared';
 	payload: {
-		data: firebase.firestore.DocumentData;
+		data: firebase.firestore.DocumentData | {};
 		id: string;
 	};
 };

@@ -13,7 +13,8 @@ body {
   min-height: calc(var(--vh, 1vh) * 100);  
   height: calc(var(--vh, 1vh) * 100);
 
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+	
 }
 
 *::after,
@@ -45,7 +46,7 @@ input{
 	&:focus{
 		outline:none;
 	}
-	font-family: Open Sans ;
+	font-family: Open Sans;
 }
 
 

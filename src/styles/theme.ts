@@ -1,6 +1,7 @@
 export const lightTheme = {
 	textColorSecondary: "#202124",
 	textColorPrimary: "#000000",
+	textColorPrimaryPale: "#454545",
 	backgroundColor: "#ffffff",
 	backgroundColorSecondary: "#f1f3f4",
 	iconColor: "#202124",
@@ -9,11 +10,14 @@ export const lightTheme = {
 	warningColor: '#e84545',
 	colors: {
 		lightBlue: '#00a8cc'
-	}
+	},
 };
 
+
+
 export const darkTheme = {
-	textColorPrimary: "#e8eaed",
+	textColorPrimary: "#ffffff",
+	textColorPrimaryPale: "#e8eaed",
 	textColorSecondary: "#9aa0a6",
 	backgroundColor: "#202124",
 	backgroundColorSecondary: "#2E2F33",
