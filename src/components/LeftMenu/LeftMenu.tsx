@@ -52,7 +52,7 @@ const LeftSideMenu: React.FC<Props> = ({ leftMenuOpen, setLeftMenuOpen }: Props)
 };
 
 const LeftMenuContainer = styled.div<StyleProps>`
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     will-change: transform;
     position: absolute;
     width: 100%;
@@ -78,7 +78,7 @@ const LeftMenuHeader = styled.div`
   * {
     cursor: pointer;
   }
-  @media (min-width: 600px) {
+  @media (min-width: 700px) {
     display: none;
   }
 `;
@@ -96,7 +96,7 @@ const LeftIconContainer = styled.div`
 const LeftMenuContent = styled.div`
   z-index: 99;
   opacity: 1;
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     will-change: width;
     width: 80%;
     opacity: 1;

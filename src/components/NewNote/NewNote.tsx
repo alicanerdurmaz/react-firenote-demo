@@ -60,7 +60,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
   };
 
   return (
-    <Modal>
+    <Modal onKeyDown={e => (e.key === 'Escape' ? cancelHandler() : null)} tabIndex={0}>
       <TakeNoteContainer bgColor={note.color}>
         <div>
           <NewNoteInput color={note.color} setNote={setNote}></NewNoteInput>
@@ -89,23 +89,52 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
   );
 };
 
-const Modal = styled.section`
+const Modal = styled.div`
+  @media (max-width: 700px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    opacity: 1;
+    background: black;
+  }
+
+  background: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TakeNoteContainer = styled.div<styleProps>`
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    justify-content: space-between;
+    background: ${props => props.bgColor};
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+    z-index: 120;
+  }
+  opacity: 1;
+  z-index: 120;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   justify-content: space-between;
   background: ${props => props.bgColor};
-  height: 100%;
-  width: 100%;
+  height: 40%;
+  width: 60%;
+  padding: 16px;
 `;
 
 const BottomBar = styled.div`
@@ -122,16 +151,25 @@ const ButtonGroupOne = styled.div`
   padding-left: 16px;
   display: flex;
   justify-content: space-around;
+  @media (min-width: 700px) {
+    justify-content: flex-start;
+  }
 `;
 const ButtonGroupTwo = styled.div`
   align-self: flex-end;
   flex: 0.4;
   display: flex;
   justify-content: space-around;
-  margin-right: 8px;
+  @media (min-width: 700px) {
+    justify-content: flex-end;
+    padding-right: 16px;
+  }
 `;
 
 const SaveButton = styled.button`
+  @media (min-width: 700px) {
+    margin-right: 16px;
+  }
   height: 24px;
   background: #364f6b;
   color: ${props => props.theme.textColorPrimary};

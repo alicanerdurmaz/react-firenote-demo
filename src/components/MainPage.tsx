@@ -33,7 +33,7 @@ const StyledMainPage = styled.div`
   grid-template-areas: 'nav nav' 'left notes';
   grid-column-gap: 16px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     grid-template-areas: 'nav nav' 'notes notes' 'notes notes';
   }
 `;

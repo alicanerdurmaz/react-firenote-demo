@@ -30,6 +30,7 @@ const NewNoteInput = ({ color, setNote }: Props) => {
     <InputArea>
       <TitleInput bgColor={color}>
         <TextareaAutosize
+          autoFocus
           maxLength={30}
           maxRows={2}
           placeholder='Title'
@@ -58,6 +59,9 @@ const TitleInput = styled.div<styleProps>`
     background: ${props => props.bgColor};
     color: ${props => props.theme.textColorPrimary};
     font-size: 16px;
+  }
+  @media (max-width: 700px) {
+    margin-top: 8px;
   }
 `;
 const ContentInput = styled.div<styleProps>`
