@@ -5,12 +5,14 @@ import { INote } from '../../context/NoteContext/noteTypes';
 type Props = {
   note: INote;
 };
-
+type StyledProps = {
+  color: string;
+};
 const NotesListItem = ({ note }: Props) => {
   const { uid, color, content, createdAt, lastEdited, tags, title } = note;
 
   return (
-    <BoxContainer>
+    <BoxContainer color={color}>
       <StyledNotesListItem>
         <NoteTitle>{title}</NoteTitle>
         <NoteContent>
@@ -39,11 +41,12 @@ const NotesListItem = ({ note }: Props) => {
   );
 };
 
-const BoxContainer = styled.div`
+const BoxContainer = styled.div<StyledProps>`
   min-height: max-content;
   max-height: 240px;
   border: 1px solid ${props => props.theme.borderColor};
   border-radius: 4px;
+  background: ${props => props.color};
 `;
 
 const StyledNotesListItem = styled.div`
@@ -57,7 +60,7 @@ const NoteTitle = styled.div`
   color: ${props => props.theme.textColorPrimary};
   text-align: start;
   margin-bottom: 8px;
-  margin-top: 16px;
+  margin-top: 10px;
   font-weight: 600;
   padding: 0px 16px;
 `;

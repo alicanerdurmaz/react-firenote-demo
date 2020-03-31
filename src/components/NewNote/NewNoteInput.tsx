@@ -32,7 +32,7 @@ const NewNoteInput = ({ color, setNote }: Props) => {
         <TextareaAutosize
           autoFocus
           maxLength={30}
-          maxRows={2}
+          maxRows={1}
           placeholder='Title'
           onChange={e => newNoteInput(e)}
           name='title'></TextareaAutosize>
@@ -51,7 +51,6 @@ const NewNoteInput = ({ color, setNote }: Props) => {
 
 const TitleInput = styled.div<styleProps>`
   padding: 8px 8px;
-  overflow: hidden;
   textarea {
     resize: none;
     width: 100%;
@@ -59,6 +58,7 @@ const TitleInput = styled.div<styleProps>`
     background: ${props => props.bgColor};
     color: ${props => props.theme.textColorPrimary};
     font-size: 16px;
+    overflow: hidden;
   }
   @media (max-width: 700px) {
     margin-top: 8px;
@@ -74,6 +74,22 @@ const ContentInput = styled.div<styleProps>`
     width: 100%;
     background: ${props => props.bgColor};
     color: ${props => props.theme.textColorPrimary};
+  }
+  textarea::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: ${props => props.bgColor};
+  }
+  textarea::-webkit-scrollbar {
+    width: 4px;
+    background-color: ${props => props.bgColor};
+  }
+  textarea::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: ${props => props.theme.backgroundColorSecondary};
   }
 `;
 

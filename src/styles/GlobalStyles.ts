@@ -27,7 +27,7 @@ body {
   justify-content: center;
   text-rendering: optimizeLegibility;
   align-items: center;
-  background: ${props => props.theme.backgroundColor};
+	background: ${props => props.theme.backgroundColor};
   
 }
 ol,
