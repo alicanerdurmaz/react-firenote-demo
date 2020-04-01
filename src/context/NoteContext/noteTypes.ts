@@ -3,6 +3,7 @@ export type INoteContext = {
 	tagsList: string[];
 	selectedTagList: string[];
 	dispatchSelectedTagList: React.Dispatch<ISelectedTagListReducerAction>;
+	setSearchTerm: React.Dispatch<React.SetStateAction<string>>
 }
 export type INote = {
 	uid: string;

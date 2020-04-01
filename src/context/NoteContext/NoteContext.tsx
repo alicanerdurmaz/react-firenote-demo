@@ -11,9 +11,12 @@ export const NoteContextProvider: React.FC = props => {
   const [notesList, dispatchNoteList] = useReducer(noteListReducer, []);
   const [selectedTagList, dispatchSelectedTagList] = useReducer(selectedTagListReducer, []);
   const [tagsList, setTagsList] = useState<string[]>([]);
-  console.log(notesList);
+  const [searchTerm, setSearchTerm] = useState('');
+
   useEffect(() => {
     if (!currentUser) return;
+
+    const text = 'test';
 
     dispatchNoteList({ type: 'cleared', payload: { data: {}, id: 'test' } });
     const notesCollectionRef = firestore
@@ -28,6 +31,7 @@ export const NoteContextProvider: React.FC = props => {
 
     const unsubscribeNoteList = notesCollectionRefWithQuery
       .orderBy('lastEdited', 'desc')
+      .endAt(`${text}\uf8ff`)
       .onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
           if (change.type === 'added') {
@@ -72,7 +76,7 @@ export const NoteContextProvider: React.FC = props => {
   }, [currentUser, selectedTagList]);
 
   return (
-    <NoteContext.Provider value={{ notesList, tagsList, dispatchSelectedTagList, selectedTagList }}>
+    <NoteContext.Provider value={{ notesList, tagsList, dispatchSelectedTagList, selectedTagList, setSearchTerm }}>
       {props.children}
     </NoteContext.Provider>
   );

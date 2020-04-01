@@ -4,17 +4,24 @@ import styled from 'styled-components/macro';
 import { useDebounce } from '../hooks/useDebounce';
 import SearchIcon from '../assets/Icons/SearchIcon';
 import CancelIcon from '../assets/Icons/CancelIcon';
+import { useNoteContext } from '../context/NoteContext/NoteContext';
 
 const SearchInput = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const { setSearchTerm } = useNoteContext();
+  const [input, setInput] = useState('');
+  const debouncedSearchTerm = useDebounce(input, 400);
 
   useEffect(() => {
-    // TODO: API CALL
-  }, [debouncedSearchTerm]);
+    if (debouncedSearchTerm.length < 3) return;
+
+    const searchInNotes = () => {
+      setSearchTerm(debouncedSearchTerm);
+    };
+    searchInNotes();
+  }, [debouncedSearchTerm, setSearchTerm]);
 
   useEffect(() => {
-    if (searchTerm.length <= 0) return;
+    if (input.length <= 0) return;
     window.addEventListener('keydown', handleUserKeyPress);
     return () => {
       window.removeEventListener('keydown', handleUserKeyPress);
@@ -25,23 +32,23 @@ const SearchInput = () => {
         resetSearchTerm();
       }
     }
-  }, [searchTerm]);
+  }, [input]);
 
-  const handleSearchTerm = (e: React.FormEvent<HTMLInputElement>) => {
-    setSearchTerm(e.currentTarget.value);
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    setInput(e.currentTarget.value);
   };
 
   const resetSearchTerm = () => {
-    setSearchTerm('');
+    setInput('');
   };
 
   return (
     <StyledSearchInputContainer>
       <StyledSearchInput
-        onChange={e => handleSearchTerm(e)}
-        value={searchTerm}
+        onChange={e => handleInput(e)}
+        value={input}
         placeholder='Search your notes'></StyledSearchInput>
-      {searchTerm.length > 0 && (
+      {input.length > 0 && (
         <span onClick={resetSearchTerm}>
           <CancelIcon></CancelIcon>
         </span>
