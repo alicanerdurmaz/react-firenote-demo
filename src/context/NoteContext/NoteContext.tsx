@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect, useContext, useReducer } from 'react';
 import { firestore } from '../../components/Firebase/firebase';
 import { useAuthContext } from '../AuthContext';
-import { INoteContext } from './noteTypes';
+import { INoteContext, CustomQuery } from './noteTypes';
 import { noteListReducer, selectedTagListReducer } from './noteReducer';
 
 export const NoteContext = createContext<INoteContext | undefined>(undefined);
@@ -12,26 +12,34 @@ export const NoteContextProvider: React.FC = props => {
   const [selectedTagList, dispatchSelectedTagList] = useReducer(selectedTagListReducer, []);
   const [tagsList, setTagsList] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [query, setQuery] = useState<CustomQuery>(CustomQuery.None);
+
+  useEffect(() => {}, [selectedTagList, searchTerm]);
 
   useEffect(() => {
     if (!currentUser) return;
-
-    const text = 'test';
-
+    console.log('subs worked');
     dispatchNoteList({ type: 'cleared', payload: { data: {}, id: 'test' } });
     const notesCollectionRef = firestore
       .collection(currentUser.uid)
       .doc('notes')
       .collection('notesCollection');
+    let notesCollectionRefWithQuery = null;
 
-    const notesCollectionRefWithQuery =
-      selectedTagList.length > 0
-        ? notesCollectionRef.where('tags', 'array-contains-any', selectedTagList)
-        : notesCollectionRef;
+    if (searchTerm.length > 0) {
+      notesCollectionRefWithQuery = notesCollectionRef.where(
+        'words',
+        'array-contains-any',
+        searchTerm.toLowerCase().split(' ')
+      );
+    } else if (selectedTagList.length > 0) {
+      notesCollectionRefWithQuery = notesCollectionRef.where('tags', 'array-contains-any', selectedTagList);
+    } else {
+      notesCollectionRefWithQuery = notesCollectionRef;
+    }
 
     const unsubscribeNoteList = notesCollectionRefWithQuery
       .orderBy('lastEdited', 'desc')
-      .endAt(`${text}\uf8ff`)
       .onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
           if (change.type === 'added') {
@@ -70,13 +78,15 @@ export const NoteContextProvider: React.FC = props => {
         if (doc.data()?.tagList) setTagsList(doc.data()?.tagList);
       });
     return () => {
+      console.log('un-subs worked');
       unsubscribeNoteList();
       unsubscribeTagsList();
     };
-  }, [currentUser, selectedTagList]);
+  }, [currentUser, selectedTagList, searchTerm]);
 
   return (
-    <NoteContext.Provider value={{ notesList, tagsList, dispatchSelectedTagList, selectedTagList, setSearchTerm }}>
+    <NoteContext.Provider
+      value={{ notesList, tagsList, dispatchSelectedTagList, selectedTagList, setSearchTerm, searchTerm }}>
       {props.children}
     </NoteContext.Provider>
   );

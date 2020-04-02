@@ -4,6 +4,7 @@ export type INoteContext = {
 	selectedTagList: string[];
 	dispatchSelectedTagList: React.Dispatch<ISelectedTagListReducerAction>;
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>
+	searchTerm: string;
 }
 export type INote = {
 	uid: string;
@@ -13,6 +14,7 @@ export type INote = {
 	lastEdited: Date;
 	tags: string[];
 	title: string;
+	words: string[];
 };
 
 export type INoteContextReducerAction = {
@@ -30,3 +32,9 @@ export type ISelectedTagListReducerAction = {
 		tag: string;
 	};
 };
+
+export enum CustomQuery {
+	None = 1,
+	Tag,
+	Term,
+}

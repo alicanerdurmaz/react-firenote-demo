@@ -13,7 +13,7 @@ type StyledProps = {
 };
 
 const TagListItem = ({ tagName, selected }: Props) => {
-  const { dispatchSelectedTagList } = useNoteContext();
+  const { dispatchSelectedTagList, setSearchTerm, searchTerm } = useNoteContext();
 
   const selectHandler = () => {
     if (!selected) {
@@ -23,6 +23,7 @@ const TagListItem = ({ tagName, selected }: Props) => {
           tag: tagName
         }
       });
+      if (searchTerm.length > 0) setSearchTerm('');
     }
     if (selected) {
       dispatchSelectedTagList({

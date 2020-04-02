@@ -7,18 +7,24 @@ import CancelIcon from '../assets/Icons/CancelIcon';
 import { useNoteContext } from '../context/NoteContext/NoteContext';
 
 const SearchInput = () => {
-  const { setSearchTerm } = useNoteContext();
+  const { setSearchTerm, searchTerm, dispatchSelectedTagList } = useNoteContext();
   const [input, setInput] = useState('');
-  const debouncedSearchTerm = useDebounce(input, 400);
+  const debouncedSearchTerm = useDebounce(input, 200);
 
   useEffect(() => {
-    if (debouncedSearchTerm.length < 3) return;
+    if (searchTerm.length === 0) {
+      resetSearchTerm();
+    } else return;
+  }, [searchTerm]);
 
-    const searchInNotes = () => {
+  useEffect(() => {
+    if (debouncedSearchTerm.length === 0 || debouncedSearchTerm.length >= 3) {
       setSearchTerm(debouncedSearchTerm);
-    };
-    searchInNotes();
-  }, [debouncedSearchTerm, setSearchTerm]);
+    }
+    if (debouncedSearchTerm.length >= 3) {
+      dispatchSelectedTagList({ type: 'cleared', payload: { tag: 'test' } });
+    }
+  }, [debouncedSearchTerm, setSearchTerm, dispatchSelectedTagList]);
 
   useEffect(() => {
     if (input.length <= 0) return;
