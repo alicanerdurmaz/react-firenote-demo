@@ -11,8 +11,11 @@ type StyledProps = {
 const NotesListItem = ({ note }: Props) => {
   const { uid, color, content, createdAt, lastEdited, tags, title } = note;
 
+  const noteItemClickHandler = () => {
+    console.log(content);
+  };
   return (
-    <BoxContainer color={color}>
+    <BoxContainer color={color} onClick={noteItemClickHandler}>
       <StyledNotesListItem>
         <NoteTitle>{title}</NoteTitle>
         <NoteContent>
@@ -47,6 +50,11 @@ const BoxContainer = styled.div<StyledProps>`
   border: 1px solid ${props => props.theme.borderColor};
   border-radius: 4px;
   background: ${props => props.color};
+  transition: all 60ms ease-in-out;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid ${props => props.theme.textColorPrimary};
+  }
 `;
 
 const StyledNotesListItem = styled.div`
@@ -56,6 +64,25 @@ const StyledNotesListItem = styled.div`
   align-content: center;
 `;
 
+const NoteHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const PinButton = styled.div`
+  user-select: none;
+  background-size: 24px 24px;
+  height: 24px;
+  width: 24px;
+  opacity: 0.5;
+  padding: 8px 8px 0px 0px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE3IDR2N2wyIDN2MmgtNnY1bC0xIDEtMS0xdi01SDV2LTJsMi0zVjRjMC0xLjEuOS0yIDItMmg2YzEuMTEgMCAyIC44OSAyIDJ6TTkgNHY3Ljc1TDcuNSAxNGg5TDE1IDExLjc1VjRIOXoiLz4KPC9zdmc+Cg==);
+  &:hover {
+    opacity: 1;
+  }
+`;
 const NoteTitle = styled.div`
   color: ${props => props.theme.textColorPrimary};
   text-align: start;

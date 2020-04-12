@@ -3,7 +3,10 @@ import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
 
-const Notes = () => {
+type INotes = {
+  setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const Notes = ({ setShowNewNoteModal }: INotes) => {
   const { notesList } = useNoteContext();
 
   return (

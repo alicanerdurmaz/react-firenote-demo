@@ -17,7 +17,7 @@ const MainPage = () => {
         {showNewNoteModal && <NewNote setShowNewNoteModal={setShowNewNoteModal}></NewNote>}
         <Navbar setLeftMenuOpen={setLeftMenuOpen}></Navbar>
         <LeftMenu leftMenuOpen={leftMenuOpen} setLeftMenuOpen={setLeftMenuOpen}></LeftMenu>
-        <Notes></Notes>
+        <Notes setShowNewNoteModal={setShowNewNoteModal}></Notes>
       </NoteContextProvider>
     </StyledMainPage>
   );
