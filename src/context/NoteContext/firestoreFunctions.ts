@@ -51,7 +51,6 @@ export const fireStorePinTest = (isPinned: boolean, uid: string) => {
 		.doc('notes')
 		.collection('notesCollection').doc(uid).update({
 			pinned: isPinned,
-			lastEdited: new Date(),
 		})
 }
 

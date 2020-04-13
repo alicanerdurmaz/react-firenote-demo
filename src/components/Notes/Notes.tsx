@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
 import { INote } from '../../context/NoteContext/noteTypes';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type INotes = {
   setNoteToBeEdited: React.Dispatch<React.SetStateAction<INote | null>>;
@@ -25,9 +25,18 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
         <NotesListPinned>
           {pinnedList.map(element =>
             element.pinned ? (
-              <div key={element.uid} onClick={event => noteItemClickHandler(element, event)}>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                positionTransition={{
+                  damping: 100,
+                  stiffness: 10
+                }}
+                key={element.uid}
+                onClick={event => noteItemClickHandler(element, event)}>
                 <NotesListItem note={element}></NotesListItem>
-              </div>
+              </motion.div>
             ) : null
           )}
         </NotesListPinned>
@@ -42,9 +51,18 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
       <NotesListOther>
         {notesList.map((element, i) =>
           element.pinned ? null : (
-            <div key={element.uid} onClick={event => noteItemClickHandler(element, event)}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              positionTransition={{
+                damping: 100,
+                stiffness: 10
+              }}
+              key={element.uid}
+              onClick={event => noteItemClickHandler(element, event)}>
               <NotesListItem note={element}></NotesListItem>
-            </div>
+            </motion.div>
           )
         )}
       </NotesListOther>

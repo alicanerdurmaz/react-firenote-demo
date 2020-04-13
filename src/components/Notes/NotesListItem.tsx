@@ -52,36 +52,8 @@ const NotesListItem = ({ note }: Props) => {
   );
 };
 
-const BoxContainer = styled.div<StyledProps>`
-  @media (max-width: 900px) {
-    min-height: 100%;
-    max-height: 100%;
-  }
-  min-height: 100%;
-  max-height: 100%;
-  border: 1px solid ${props => props.theme.borderColor};
-  border-radius: 4px;
-  background: ${props => props.color};
-  transition: all 60ms ease-in-out;
-  cursor: pointer;
-  &:hover {
-    border: 1px solid ${props => props.theme.textColorPrimary};
-  }
-`;
-
-const StyledNotesListItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-`;
-
-const NoteHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
 const PinButton = styled.div<PinButtonProps>`
+  visibility: hidden;
   user-select: none;
   background-size: 24px 24px;
   height: 24px;
@@ -97,6 +69,39 @@ const PinButton = styled.div<PinButtonProps>`
   &:hover {
     opacity: 1;
   }
+`;
+
+const BoxContainer = styled.div<StyledProps>`
+  @media (max-width: 900px) {
+    min-height: 100%;
+    max-height: 100%;
+  }
+  min-height: 100%;
+  max-height: 100%;
+  border: 1px solid ${props => props.theme.borderColor};
+  border-radius: 4px;
+  background: ${props => props.color};
+  transition: all 60ms ease-in-out;
+  cursor: pointer;
+  &:hover {
+    ${PinButton} {
+      visibility: visible;
+    }
+    border: 1px solid ${props => props.theme.textColorPrimary};
+  }
+`;
+
+const StyledNotesListItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+`;
+
+const NoteHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const NoteTitle = styled.div`
