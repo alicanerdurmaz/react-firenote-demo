@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import TextareaAutosize from 'react-textarea-autosize';
+import { INote } from '../../context/NoteContext/noteTypes';
+import { NoteContext } from '../../context/NoteContext/NoteContext';
 
 type Notes = {
   title: string;
@@ -9,6 +11,7 @@ type Notes = {
   color: string;
 };
 type Props = {
+  note: Notes;
   color: string;
   setNote: React.Dispatch<React.SetStateAction<Notes>>;
 };
@@ -16,7 +19,7 @@ type styleProps = {
   bgColor: string;
 };
 
-const NewNoteInput = ({ color, setNote }: Props) => {
+const NewNoteInput = ({ color, setNote, note }: Props) => {
   const newNoteInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -31,6 +34,7 @@ const NewNoteInput = ({ color, setNote }: Props) => {
       <TitleInput bgColor={color}>
         <TextareaAutosize
           autoFocus
+          value={note.title}
           maxLength={30}
           maxRows={1}
           placeholder='Title'
@@ -39,6 +43,7 @@ const NewNoteInput = ({ color, setNote }: Props) => {
       </TitleInput>
       <ContentInput bgColor={color}>
         <TextareaAutosize
+          value={note.content}
           maxLength={999}
           maxRows={6}
           placeholder='Take a note...'

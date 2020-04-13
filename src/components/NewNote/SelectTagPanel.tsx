@@ -5,15 +5,16 @@ import { firestoreAddTag } from '../../context/NoteContext/firestoreFunctions';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
 
 type Props = {
+  tags: string[];
   addTag: (list: string[]) => void;
   userId: string;
 };
 
-const SelectTagPanel = ({ addTag, userId }: Props) => {
+const SelectTagPanel = ({ addTag, userId, tags }: Props) => {
   const { tagsList } = useNoteContext();
 
   const [tagInputText, setTagInputText] = useState('');
-  const [checkedTags, setCheckedTags] = useState<string[]>([]);
+  const [checkedTags, setCheckedTags] = useState<string[]>(tags);
 
   useEffect(() => {
     addTag(checkedTags);
@@ -196,8 +197,12 @@ const PlusIcon = styled.div`
 const SavedTagsContainer = styled.div`
   padding: 4px 0px;
   padding-top: 16px;
+  max-height: 500px;
 `;
 const SavedTagsList = styled.div`
+  overflow: auto;
+  overflow-x: hidden;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `;

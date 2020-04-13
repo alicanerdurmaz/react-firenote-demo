@@ -2,18 +2,25 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
+import { INote } from '../../context/NoteContext/noteTypes';
 
 type INotes = {
+  setNoteToBeEdited: React.Dispatch<React.SetStateAction<INote | null>>;
   setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const Notes = ({ setShowNewNoteModal }: INotes) => {
+const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
   const { notesList } = useNoteContext();
-
+  const noteItemClickHandler = (obj: INote) => {
+    setShowNewNoteModal(true);
+    setNoteToBeEdited(obj);
+  };
   return (
     <NotesArea>
       <NotesList>
         {notesList.map((e, i) => (
-          <NotesListItem key={i} note={e}></NotesListItem>
+          <div key={i} onClick={() => noteItemClickHandler(e)}>
+            <NotesListItem note={e}></NotesListItem>
+          </div>
         ))}
       </NotesList>
     </NotesArea>
@@ -25,6 +32,7 @@ const NotesArea = styled.div`
   overflow-x: hidden;
 `;
 const NotesList = styled.div`
+  user-select: none;
   padding: 8px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

@@ -12,13 +12,12 @@ export const NoteContextProvider: React.FC = props => {
   const [selectedTagList, dispatchSelectedTagList] = useReducer(selectedTagListReducer, []);
   const [tagsList, setTagsList] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [query, setQuery] = useState<CustomQuery>(CustomQuery.None);
 
   useEffect(() => {}, [selectedTagList, searchTerm]);
 
   useEffect(() => {
     if (!currentUser) return;
-    console.log('subs worked');
+
     dispatchNoteList({ type: 'cleared', payload: { data: {}, id: 'test' } });
     const notesCollectionRef = firestore
       .collection(currentUser.uid)
@@ -38,39 +37,37 @@ export const NoteContextProvider: React.FC = props => {
       notesCollectionRefWithQuery = notesCollectionRef;
     }
 
-    const unsubscribeNoteList = notesCollectionRefWithQuery
-      .orderBy('lastEdited', 'desc')
-      .onSnapshot(function(snapshot) {
-        snapshot.docChanges().forEach(function(change) {
-          if (change.type === 'added') {
-            dispatchNoteList({
-              type: 'added',
-              payload: {
-                data: change.doc.data(),
-                id: change.doc.id
-              }
-            });
-          }
-          if (change.type === 'modified') {
-            dispatchNoteList({
-              type: 'modified',
-              payload: {
-                data: change.doc.data(),
-                id: change.doc.id
-              }
-            });
-          }
-          if (change.type === 'removed') {
-            dispatchNoteList({
-              type: 'removed',
-              payload: {
-                data: change.doc.data(),
-                id: change.doc.id
-              }
-            });
-          }
-        });
+    const unsubscribeNoteList = notesCollectionRefWithQuery.orderBy('lastEdited', 'asc').onSnapshot(function(snapshot) {
+      snapshot.docChanges().forEach(function(change) {
+        if (change.type === 'added') {
+          dispatchNoteList({
+            type: 'added',
+            payload: {
+              data: change.doc.data(),
+              id: change.doc.id
+            }
+          });
+        }
+        if (change.type === 'modified') {
+          dispatchNoteList({
+            type: 'modified',
+            payload: {
+              data: change.doc.data(),
+              id: change.doc.id
+            }
+          });
+        }
+        if (change.type === 'removed') {
+          dispatchNoteList({
+            type: 'removed',
+            payload: {
+              data: change.doc.data(),
+              id: change.doc.id
+            }
+          });
+        }
       });
+    });
     const unsubscribeTagsList = firestore
       .collection(currentUser.uid)
       .doc('tags')
@@ -78,7 +75,6 @@ export const NoteContextProvider: React.FC = props => {
         if (doc.data()?.tagList) setTagsList(doc.data()?.tagList);
       });
     return () => {
-      console.log('un-subs worked');
       unsubscribeNoteList();
       unsubscribeTagsList();
     };

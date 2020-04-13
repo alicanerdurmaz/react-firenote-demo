@@ -1,13 +1,16 @@
 import React, { useState, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components/macro';
-import TextareaAutosize from 'react-textarea-autosize';
+
+import { INote } from '../../context/NoteContext/noteTypes';
 import { useAuthContext } from '../../context/AuthContext';
 import SelectColorPanel from './SelectColorPanel';
 import SelectTagPanel from './SelectTagPanel';
-import { firestoreAddNote } from '../../context/NoteContext/firestoreFunctions';
+import { firestoreAddNote, firestoreUpdateNote } from '../../context/NoteContext/firestoreFunctions';
 import NewNoteInput from './NewNoteInput';
 
 type Props = {
+  noteToBeEdited: INote | null;
+  setNoteToBeEdited: React.Dispatch<React.SetStateAction<INote | null>>;
   setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type styleProps = {
@@ -21,19 +24,20 @@ type Notes = {
   color: string;
 };
 
-const NewNote = ({ setShowNewNoteModal }: Props) => {
+const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Props) => {
   const themeContext = useContext(ThemeContext);
   const { currentUser } = useAuthContext();
 
   const [note, setNote] = useState<Notes>({
-    title: '',
-    content: '',
-    tags: [],
-    color: themeContext.backgroundColor
+    title: noteToBeEdited ? noteToBeEdited.title : '',
+    content: noteToBeEdited ? noteToBeEdited.content : '',
+    tags: noteToBeEdited ? noteToBeEdited.tags : [],
+    color: noteToBeEdited ? noteToBeEdited.color : themeContext.backgroundColor
   });
 
   const cancelHandler = () => {
     setShowNewNoteModal(false);
+    setNoteToBeEdited(null);
   };
 
   const saveNoteToFirebase = () => {
@@ -42,7 +46,9 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
     } else if (note.title.length < 1 || note.content.length < 1) {
       return;
     } else {
-      firestoreAddNote(currentUser.uid, note);
+      noteToBeEdited
+        ? firestoreUpdateNote(currentUser.uid, note, noteToBeEdited.uid)
+        : firestoreAddNote(currentUser.uid, note);
     }
   };
 
@@ -63,7 +69,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
     <Modal onKeyDown={e => (e.key === 'Escape' ? cancelHandler() : null)} tabIndex={0}>
       <TakeNoteContainer bgColor={note.color}>
         <div>
-          <NewNoteInput color={note.color} setNote={setNote}></NewNoteInput>
+          <NewNoteInput color={note.color} setNote={setNote} note={note}></NewNoteInput>
           <TagListContainer>
             {note.tags.map(e => {
               return (
@@ -76,7 +82,7 @@ const NewNote = ({ setShowNewNoteModal }: Props) => {
         </div>
         <BottomBar>
           <ButtonGroupOne>
-            <SelectTagPanel addTag={addTag} userId={currentUser.uid}></SelectTagPanel>
+            <SelectTagPanel addTag={addTag} userId={currentUser.uid} tags={note.tags}></SelectTagPanel>
             <SelectColorPanel selectedColorProp={note.color} selectColor={selectColor}></SelectColorPanel>
           </ButtonGroupOne>
           <ButtonGroupTwo>
@@ -101,7 +107,7 @@ const Modal = styled.div`
     background: black;
   }
 
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
   position: fixed;
   top: 0;
   left: 0;
@@ -125,11 +131,11 @@ const TakeNoteContainer = styled.div<styleProps>`
     opacity: 1;
     z-index: 120;
   }
+  border-radius: 8px;
   opacity: 1;
   z-index: 120;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
   justify-content: space-between;
   background: ${props => props.bgColor};
   height: 40%;

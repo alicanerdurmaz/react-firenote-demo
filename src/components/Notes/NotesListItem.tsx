@@ -11,11 +11,8 @@ type StyledProps = {
 const NotesListItem = ({ note }: Props) => {
   const { uid, color, content, createdAt, lastEdited, tags, title } = note;
 
-  const noteItemClickHandler = () => {
-    console.log(content);
-  };
   return (
-    <BoxContainer color={color} onClick={noteItemClickHandler}>
+    <BoxContainer color={color}>
       <StyledNotesListItem>
         <NoteTitle>{title}</NoteTitle>
         <NoteContent>

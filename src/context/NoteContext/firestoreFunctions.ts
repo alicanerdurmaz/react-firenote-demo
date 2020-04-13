@@ -9,7 +9,6 @@ type Data = {
 }
 
 export const firestoreAddNote = (userId: string, data: Data) => {
-
 	firestore
 		.collection(userId)
 		.doc('notes')
@@ -29,6 +28,19 @@ export const firestoreAddNote = (userId: string, data: Data) => {
 		.catch(function (error) {
 			console.error('Error adding document: ', error);
 		});
+}
+export const firestoreUpdateNote = (userId: string, data: Data, id: string) => {
+	firestore
+		.collection(userId)
+		.doc('notes')
+		.collection('notesCollection').doc(id).update({
+			title: data.title,
+			content: data.content,
+			tags: data.tags,
+			color: data.color,
+			lastEdited: new Date(),
+			words: wordsParser(data.content, data.title)
+		})
 }
 
 export const firestoreDeleteNote = (userId: string, docId: string) => {

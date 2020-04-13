@@ -24,7 +24,7 @@ export function noteListReducer(state: INote[], action: INoteContextReducerActio
 		case 'added':
 			const newNote = action.payload.data as INote;
 			newNote.uid = action.payload.id;
-			return [...state, newNote];
+			return [newNote, ...state];
 		case 'modified':
 			return state.map(e => {
 				if (e.uid !== action.payload.id) {

@@ -6,18 +6,25 @@ import Navbar from './Navbar';
 import AddNoteButton from './AddNoteButton';
 import NewNote from './NewNote/NewNote';
 import { NoteContextProvider } from '../context/NoteContext/NoteContext';
+import { INote } from '../context/NoteContext/noteTypes';
 
 const MainPage = () => {
   const [leftMenuOpen, setLeftMenuOpen] = useState(false);
   const [showNewNoteModal, setShowNewNoteModal] = useState(false);
+  const [noteToBeEdited, setNoteToBeEdited] = useState<INote | null>(null);
   return (
     <StyledMainPage>
       {!showNewNoteModal && <AddNoteButton setShowNewNoteModal={setShowNewNoteModal}></AddNoteButton>}
       <NoteContextProvider>
-        {showNewNoteModal && <NewNote setShowNewNoteModal={setShowNewNoteModal}></NewNote>}
+        {showNewNoteModal && (
+          <NewNote
+            setShowNewNoteModal={setShowNewNoteModal}
+            noteToBeEdited={noteToBeEdited}
+            setNoteToBeEdited={setNoteToBeEdited}></NewNote>
+        )}
         <Navbar setLeftMenuOpen={setLeftMenuOpen}></Navbar>
         <LeftMenu leftMenuOpen={leftMenuOpen} setLeftMenuOpen={setLeftMenuOpen}></LeftMenu>
-        <Notes setShowNewNoteModal={setShowNewNoteModal}></Notes>
+        <Notes setShowNewNoteModal={setShowNewNoteModal} setNoteToBeEdited={setNoteToBeEdited}></Notes>
       </NoteContextProvider>
     </StyledMainPage>
   );
