@@ -15,15 +15,20 @@ type PinButtonProps = {
 };
 const NotesListItem = ({ note }: Props) => {
   const { uid, color, content, createdAt, lastEdited, tags, title, pinned } = note;
+
   const pinNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     fireStorePinTest(!pinned, uid);
+  };
+  const selectNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    console.log('clicked');
   };
   return (
     <BoxContainer color={color}>
       <StyledNotesListItem>
         <NoteHeader>
-          <SelectNoteButton></SelectNoteButton>
+          <SelectNoteButton onClick={e => selectNoteHandler(e)}></SelectNoteButton>
           <NoteTitle>{title}</NoteTitle>
           <PinButton onClick={e => pinNoteHandler(e)} pinned={pinned}></PinButton>
         </NoteHeader>
@@ -53,10 +58,14 @@ const NotesListItem = ({ note }: Props) => {
   );
 };
 const SelectNoteButton = styled.div`
+  opacity: 0;
+  padding: 8px;
   background-size: 24px 24px;
   height: 24px;
   width: 24px;
-  background-image: ${props => props.theme.selectNoteButton};
+  transform: translate(-8px, -8px);
+  background-image: ${props => props.theme.selectNoteIcon};
+  transition: opacity 190ms linear;
 `;
 const PinButton = styled.div<PinButtonProps>`
   visibility: ${props => (props.pinned ? 'visible' : 'hidden')};
@@ -70,7 +79,7 @@ const PinButton = styled.div<PinButtonProps>`
   background-repeat: no-repeat;
   background-image: ${props => (props.pinned ? props.theme.pinnedIcon : props.theme.pinIcon)};
   will-change: transform;
-  transition: transform 60ms ease-in-out;
+  transition: opacity 190ms linear, transform 60ms linear, visibility 60ms linear;
   &:hover {
     opacity: 1;
     transform: rotate(40deg);
@@ -88,11 +97,15 @@ const BoxContainer = styled.div<StyledProps>`
   border: 1px solid ${props => props.theme.borderColor};
   border-radius: 4px;
   background: ${props => props.theme.backgroundColor};
-  transition: all 60ms ease-in-out;
+  transition: opacity 190ms linear;
   cursor: pointer;
   &:hover {
     ${PinButton} {
+      opacity: 1;
       visibility: visible;
+    }
+    ${SelectNoteButton} {
+      opacity: 1;
     }
     border: 1px solid ${props => props.theme.textColorPrimary};
   }
