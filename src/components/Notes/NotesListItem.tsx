@@ -23,6 +23,7 @@ const NotesListItem = ({ note }: Props) => {
     <BoxContainer color={color}>
       <StyledNotesListItem>
         <NoteHeader>
+          <SelectNoteButton></SelectNoteButton>
           <NoteTitle>{title}</NoteTitle>
           <PinButton onClick={e => pinNoteHandler(e)} pinned={pinned}></PinButton>
         </NoteHeader>
@@ -51,9 +52,14 @@ const NotesListItem = ({ note }: Props) => {
     </BoxContainer>
   );
 };
-
+const SelectNoteButton = styled.div`
+  background-size: 24px 24px;
+  height: 24px;
+  width: 24px;
+  background-image: ${props => props.theme.selectNoteButton};
+`;
 const PinButton = styled.div<PinButtonProps>`
-  visibility: hidden;
+  visibility: ${props => (props.pinned ? 'visible' : 'hidden')};
   user-select: none;
   background-size: 24px 24px;
   height: 24px;
@@ -62,12 +68,12 @@ const PinButton = styled.div<PinButtonProps>`
   padding: 8px 12px 0px 0px;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: ${props =>
-    props.pinned
-      ? 'url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE3IDRhMiAyIDAgMCAwLTItMkg5Yy0xLjEgMC0yIC45LTIgMnY3bC0yIDN2Mmg2djVsMSAxIDEtMXYtNWg2di0ybC0yLTNWNHoiLz4KPC9zdmc+Cg==)'
-      : 'url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE3IDR2N2wyIDN2MmgtNnY1bC0xIDEtMS0xdi01SDV2LTJsMi0zVjRjMC0xLjEuOS0yIDItMmg2YzEuMTEgMCAyIC44OSAyIDJ6TTkgNHY3Ljc1TDcuNSAxNGg5TDE1IDExLjc1VjRIOXoiLz4KPC9zdmc+Cg==)'};
+  background-image: ${props => (props.pinned ? props.theme.pinnedIcon : props.theme.pinIcon)};
+  will-change: transform;
+  transition: transform 60ms ease-in-out;
   &:hover {
     opacity: 1;
+    transform: rotate(40deg);
   }
 `;
 
@@ -76,11 +82,12 @@ const BoxContainer = styled.div<StyledProps>`
     min-height: 100%;
     max-height: 100%;
   }
+  will-change: transform;
   min-height: 100%;
   max-height: 100%;
   border: 1px solid ${props => props.theme.borderColor};
   border-radius: 4px;
-  background: ${props => props.color};
+  background: ${props => props.theme.backgroundColor};
   transition: all 60ms ease-in-out;
   cursor: pointer;
   &:hover {

@@ -26,15 +26,18 @@ export function noteListReducer(state: INote[], action: INoteContextReducerActio
 			newNote.uid = action.payload.id;
 			return [newNote, ...state];
 		case 'modified':
-			return state.map(e => {
-				if (e.uid !== action.payload.id) {
-					return e;
-				} else {
-					const modifiedObject = action.payload.data as INote;
-					modifiedObject.uid = e.uid;
-					return modifiedObject;
-				}
-			});
+			// return state.map(e => {
+			// 	if (e.uid !== action.payload.id) {
+			// 		return e;
+			// 	} else {
+			// 		const modifiedObject = action.payload.data as INote;
+			// 		modifiedObject.uid = e.uid;
+			// 		return modifiedObject;
+			// 	}
+			const filterState = state.filter(e => e.uid !== action.payload.id);
+			const modifiedObject = action.payload.data as INote;
+			modifiedObject.uid = action.payload.id;
+			return [modifiedObject, ...filterState];
 		case 'removed':
 			return state.filter(e => e.uid !== action.payload.id);
 		case 'cleared':

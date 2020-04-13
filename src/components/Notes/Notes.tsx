@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
@@ -11,6 +11,7 @@ type INotes = {
 };
 const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
   const { notesList } = useNoteContext();
+  const [selectedNoteList, setSelectedNoteList] = useState<string[]>([]);
   const noteItemClickHandler = (obj: INote, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     setShowNewNoteModal(true);
@@ -18,7 +19,7 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
   };
 
   const renderPinnedList = () => {
-    const pinnedList = notesList.filter(e => e.pinned).reverse();
+    const pinnedList = notesList.filter(e => e.pinned);
     return pinnedList.length > 0 ? (
       <>
         <GridLabelPinned>PINNED</GridLabelPinned>
