@@ -6,6 +6,7 @@ type Data = {
 	content: string;
 	tags: string[];
 	title: string;
+	pinned: boolean;
 }
 
 export const firestoreAddNote = (userId: string, data: Data) => {
@@ -20,7 +21,8 @@ export const firestoreAddNote = (userId: string, data: Data) => {
 			color: data.color,
 			lastEdited: new Date(),
 			createdAt: new Date(),
-			words: wordsParser(data.content, data.title)
+			words: wordsParser(data.content, data.title),
+			pinned: false
 		})
 		.then(function (docRef) {
 			console.log('Document written with ID: ', docRef.id);
@@ -39,7 +41,17 @@ export const firestoreUpdateNote = (userId: string, data: Data, id: string) => {
 			tags: data.tags,
 			color: data.color,
 			lastEdited: new Date(),
-			words: wordsParser(data.content, data.title)
+			words: wordsParser(data.content, data.title),
+			pinned: data.pinned,
+		})
+}
+export const fireStorePinTest = (isPinned: boolean, uid: string) => {
+	firestore
+		.collection("DdAhaoSVldOjAViG6NzJOkuSebT2")
+		.doc('notes')
+		.collection('notesCollection').doc(uid).update({
+			pinned: isPinned,
+			lastEdited: new Date(),
 		})
 }
 

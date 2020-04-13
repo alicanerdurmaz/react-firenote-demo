@@ -9,7 +9,7 @@
     "@types/react-textarea-autosize": "^4.3.5",
     "@types/styled-components": "^4.4.3",
     "firebase": "^7.9.1",
-    "node-sass": "^4.13.1",
+    "framer-motion": "^1.10.3",
     "react": "^16.12.0",
     "react-app-rewire-hot-loader": "^2.0.1",
     "react-app-rewired": "^2.1.5",
@@ -18,7 +18,6 @@
     "react-scripts": "3.4.0",
     "react-textarea-autosize": "^7.1.2",
     "styled-components": "^5.0.1",
-    "styled-icons": "^9.4.0",
     "typescript": "~3.7.2"
   },
   "scripts": {

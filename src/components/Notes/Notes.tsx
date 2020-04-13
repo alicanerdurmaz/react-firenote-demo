@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
 import { INote } from '../../context/NoteContext/noteTypes';
+import { motion } from 'framer-motion';
 
 type INotes = {
   setNoteToBeEdited: React.Dispatch<React.SetStateAction<INote | null>>;
@@ -10,28 +11,80 @@ type INotes = {
 };
 const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
   const { notesList } = useNoteContext();
-  const noteItemClickHandler = (obj: INote) => {
+  const noteItemClickHandler = (obj: INote, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
     setShowNewNoteModal(true);
     setNoteToBeEdited(obj);
   };
+
+  const renderPinnedList = () => {
+    const pinnedList = notesList.filter(e => e.pinned).reverse();
+    return pinnedList.length > 0 ? (
+      <>
+        <GridLabelPinned>PINNED</GridLabelPinned>
+        <NotesListPinned>
+          {pinnedList.map(element =>
+            element.pinned ? (
+              <div key={element.uid} onClick={event => noteItemClickHandler(element, event)}>
+                <NotesListItem note={element}></NotesListItem>
+              </div>
+            ) : null
+          )}
+        </NotesListPinned>
+        <GridLabelOther>OTHERS</GridLabelOther>
+      </>
+    ) : null;
+  };
+
   return (
     <NotesArea>
-      <NotesList>
-        {notesList.map((e, i) => (
-          <div key={i} onClick={() => noteItemClickHandler(e)}>
-            <NotesListItem note={e}></NotesListItem>
-          </div>
-        ))}
-      </NotesList>
+      {renderPinnedList()}
+      <NotesListOther>
+        {notesList.map((element, i) =>
+          element.pinned ? null : (
+            <div key={element.uid} onClick={event => noteItemClickHandler(element, event)}>
+              <NotesListItem note={element}></NotesListItem>
+            </div>
+          )
+        )}
+      </NotesListOther>
     </NotesArea>
   );
 };
+const GridLabelPinned = styled.div`
+  margin-left: 10px;
+  text-align: start;
+  font-size: 11px;
+  font-weight: 600px;
+  letter-spacing: 1px;
+  color: ${props => props.theme.textColorSecondary};
+`;
+const GridLabelOther = styled.div`
+  font-size: 11px;
+  font-weight: 600px;
+  letter-spacing: 1px;
+  margin-left: 10px;
+  margin-top: 60px;
+  text-align: start;
+  color: ${props => props.theme.textColorSecondary};
+`;
 const NotesArea = styled.div`
   grid-area: notes;
   overflow: auto;
   overflow-x: hidden;
 `;
-const NotesList = styled.div`
+const NotesListPinned = styled.div`
+  user-select: none;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  }
+  grid-gap: 16px;
+  grid-auto-flow: row;
+`;
+const NotesListOther = styled.div`
   user-select: none;
   padding: 8px;
   display: grid;
@@ -41,4 +94,5 @@ const NotesList = styled.div`
   }
   grid-gap: 16px;
 `;
+
 export default Notes;

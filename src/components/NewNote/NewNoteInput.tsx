@@ -9,6 +9,7 @@ type Notes = {
   content: string;
   tags: string[];
   color: string;
+  pinned: boolean;
 };
 type Props = {
   note: Notes;

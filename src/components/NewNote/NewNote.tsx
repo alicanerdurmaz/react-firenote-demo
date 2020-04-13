@@ -22,6 +22,7 @@ type Notes = {
   content: string;
   tags: string[];
   color: string;
+  pinned: boolean;
 };
 
 const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Props) => {
@@ -32,7 +33,8 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
     title: noteToBeEdited ? noteToBeEdited.title : '',
     content: noteToBeEdited ? noteToBeEdited.content : '',
     tags: noteToBeEdited ? noteToBeEdited.tags : [],
-    color: noteToBeEdited ? noteToBeEdited.color : themeContext.backgroundColor
+    color: noteToBeEdited ? noteToBeEdited.color : themeContext.backgroundColor,
+    pinned: noteToBeEdited ? noteToBeEdited.pinned : false
   });
 
   const cancelHandler = () => {

@@ -15,6 +15,7 @@ export type INote = {
 	tags: string[];
 	title: string;
 	words: string[];
+	pinned: boolean;
 };
 
 export type INoteContextReducerAction = {
