@@ -48,9 +48,7 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
     } else if (note.title.length < 1 || note.content.length < 1) {
       return;
     } else {
-      noteToBeEdited
-        ? firestoreUpdateNote(currentUser.uid, note, noteToBeEdited.uid)
-        : firestoreAddNote(currentUser.uid, note);
+      noteToBeEdited ? firestoreUpdateNote(note, noteToBeEdited.uid) : firestoreAddNote(note);
     }
   };
 

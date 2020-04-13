@@ -1,4 +1,5 @@
-import firebase, { firestore } from '../../components/Firebase/firebase';
+import firebase, { firestore, auth } from '../../components/Firebase/firebase';
+
 
 
 type Data = {
@@ -9,9 +10,9 @@ type Data = {
 	pinned: boolean;
 }
 
-export const firestoreAddNote = (userId: string, data: Data) => {
+export const firestoreAddNote = (data: Data) => {
 	firestore
-		.collection(userId)
+		.collection(auth.currentUser!.uid)
 		.doc('notes')
 		.collection('notesCollection')
 		.add({
@@ -31,9 +32,9 @@ export const firestoreAddNote = (userId: string, data: Data) => {
 			console.error('Error adding document: ', error);
 		});
 }
-export const firestoreUpdateNote = (userId: string, data: Data, id: string) => {
+export const firestoreUpdateNote = (data: Data, id: string) => {
 	firestore
-		.collection(userId)
+		.collection(auth.currentUser!.uid)
 		.doc('notes')
 		.collection('notesCollection').doc(id).update({
 			title: data.title,
@@ -55,9 +56,9 @@ export const fireStorePinTest = (isPinned: boolean, uid: string) => {
 		})
 }
 
-export const firestoreDeleteNote = (userId: string, docId: string) => {
+export const firestoreDeleteNote = (docId: string) => {
 	firestore
-		.collection(userId)
+		.collection(auth.currentUser!.uid)
 		.doc('notes')
 		.collection('notesCollection').doc(docId).delete().then(function () {
 			console.log("Document successfully deleted!");
@@ -65,18 +66,30 @@ export const firestoreDeleteNote = (userId: string, docId: string) => {
 			console.error("Error removing document: ", error);
 		});
 }
+export const firestoreDeleteMultipleNotes = (docIdList: string[]) => {
+	let batch = firestore.batch();
+	docIdList.forEach(uid => {
+		const ref = firestore
+			.collection(auth.currentUser!.uid)
+			.doc('notes')
+			.collection('notesCollection').doc(uid);
+		batch.delete(ref);
+	})
+	batch.commit();
 
-export const firestoreAddTag = (userId: string, tag: string) => {
+}
+
+export const firestoreAddTag = (tag: string) => {
 	const tagRef = firestore
-		.collection(userId)
+		.collection(auth.currentUser!.uid)
 		.doc('tags');
 	tagRef.update({
 		tagList: firebase.firestore.FieldValue.arrayUnion(tag)
 	});
 }
-export const firestoreRemoveTag = (userId: string, tag: string, docId: string) => {
+export const firestoreRemoveTag = (tag: string, docId: string) => {
 	const tagRef = firestore
-		.collection(userId)
+		.collection(auth.currentUser!.uid)
 		.doc('tags');
 	tagRef.update({
 		tagList: firebase.firestore.FieldValue.arrayRemove(tag)

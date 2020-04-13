@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { INote } from '../../context/NoteContext/noteTypes';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
@@ -6,15 +6,22 @@ import { fireStorePinTest } from '../../context/NoteContext/firestoreFunctions';
 
 type Props = {
   note: INote;
+  setSelectedNoteList: React.Dispatch<React.SetStateAction<string[]>>;
 };
-type StyledProps = {
+type BoxContainerProps = {
   color: string;
+  selected: boolean;
+};
+type SelectNoteButtonProps = {
+  selected: boolean;
 };
 type PinButtonProps = {
   pinned: boolean;
 };
-const NotesListItem = ({ note }: Props) => {
+
+const NotesListItem = ({ note, setSelectedNoteList }: Props) => {
   const { uid, color, content, createdAt, lastEdited, tags, title, pinned } = note;
+  const [selected, setSelected] = useState(false);
 
   const pinNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
@@ -22,13 +29,19 @@ const NotesListItem = ({ note }: Props) => {
   };
   const selectNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
-    console.log('clicked');
+    if (selected) {
+      setSelectedNoteList(prevState => prevState.filter(e => e !== uid));
+    } else {
+      setSelectedNoteList(prevState => [...prevState, uid]);
+    }
+
+    setSelected(!selected);
   };
   return (
-    <BoxContainer color={color}>
+    <BoxContainer color={color} selected={selected}>
       <StyledNotesListItem>
         <NoteHeader>
-          <SelectNoteButton onClick={e => selectNoteHandler(e)}></SelectNoteButton>
+          <SelectNoteButton onClick={e => selectNoteHandler(e)} selected={selected}></SelectNoteButton>
           <NoteTitle>{title}</NoteTitle>
           <PinButton onClick={e => pinNoteHandler(e)} pinned={pinned}></PinButton>
         </NoteHeader>
@@ -57,16 +70,34 @@ const NotesListItem = ({ note }: Props) => {
     </BoxContainer>
   );
 };
-const SelectNoteButton = styled.div`
-  opacity: 0;
-  padding: 8px;
+
+const NoteHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const SelectNoteButton = styled.div<SelectNoteButtonProps>`
+  opacity: ${props => (props.selected ? 1 : 0)};
+  padding: 2px;
   background-size: 24px 24px;
   height: 24px;
   width: 24px;
   transform: translate(-8px, -8px);
   background-image: ${props => props.theme.selectNoteIcon};
   transition: opacity 190ms linear;
+  background-repeat: no-repeat;
+  position: absolute;
 `;
+const NoteTitle = styled.div`
+  color: ${props => props.theme.textColorPrimary};
+  text-align: start;
+  margin-bottom: 8px;
+  margin-top: 10px;
+  font-weight: 600;
+  padding: 0px 16px;
+  flex: 2;
+`;
+
 const PinButton = styled.div<PinButtonProps>`
   visibility: ${props => (props.pinned ? 'visible' : 'hidden')};
   user-select: none;
@@ -86,7 +117,7 @@ const PinButton = styled.div<PinButtonProps>`
   }
 `;
 
-const BoxContainer = styled.div<StyledProps>`
+const BoxContainer = styled.div<BoxContainerProps>`
   @media (max-width: 900px) {
     min-height: 100%;
     max-height: 100%;
@@ -94,7 +125,7 @@ const BoxContainer = styled.div<StyledProps>`
   will-change: transform;
   min-height: 100%;
   max-height: 100%;
-  border: 1px solid ${props => props.theme.borderColor};
+  border: 1px solid ${props => (props.selected ? props.theme.colors.lightBlue : props.theme.borderColor)};
   border-radius: 4px;
   background: ${props => props.theme.backgroundColor};
   transition: opacity 190ms linear;
@@ -107,7 +138,7 @@ const BoxContainer = styled.div<StyledProps>`
     ${SelectNoteButton} {
       opacity: 1;
     }
-    border: 1px solid ${props => props.theme.textColorPrimary};
+    border: 1px solid ${props => (props.selected ? props.theme.colors.lightBlue : props.theme.textColorPrimary)};
   }
 `;
 
@@ -118,20 +149,6 @@ const StyledNotesListItem = styled.div`
   align-content: center;
 `;
 
-const NoteHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const NoteTitle = styled.div`
-  color: ${props => props.theme.textColorPrimary};
-  text-align: start;
-  margin-bottom: 8px;
-  margin-top: 10px;
-  font-weight: 600;
-  padding: 0px 16px;
-`;
 const NoteContent = styled.div`
   color: ${props => props.theme.textColorPrimary};
   text-align: start;

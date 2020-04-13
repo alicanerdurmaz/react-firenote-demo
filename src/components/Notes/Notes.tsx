@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
 import { INote } from '../../context/NoteContext/noteTypes';
-import { motion, AnimatePresence } from 'framer-motion';
+import { firestoreDeleteMultipleNotes } from '../../context/NoteContext/firestoreFunctions';
 
 type INotes = {
   setNoteToBeEdited: React.Dispatch<React.SetStateAction<INote | null>>;
@@ -36,7 +37,7 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
                 }}
                 key={element.uid}
                 onClick={event => noteItemClickHandler(element, event)}>
-                <NotesListItem note={element}></NotesListItem>
+                <NotesListItem note={element} setSelectedNoteList={setSelectedNoteList}></NotesListItem>
               </motion.div>
             ) : null
           )}
@@ -46,8 +47,17 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
     ) : null;
   };
 
+  const deleteAllSelectedNotes = () => {
+    firestoreDeleteMultipleNotes(selectedNoteList);
+    setSelectedNoteList([]);
+  };
   return (
     <NotesArea>
+      {selectedNoteList.length > 0 ? (
+        <SelectedMenuPanel onClick={deleteAllSelectedNotes}>
+          <span>DELETE ALL SELECTED NOTES</span>
+        </SelectedMenuPanel>
+      ) : null}
       {renderPinnedList()}
       <NotesListOther>
         {notesList.map((element, i) =>
@@ -62,7 +72,7 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
               }}
               key={element.uid}
               onClick={event => noteItemClickHandler(element, event)}>
-              <NotesListItem note={element}></NotesListItem>
+              <NotesListItem note={element} setSelectedNoteList={setSelectedNoteList}></NotesListItem>
             </motion.div>
           )
         )}
@@ -70,6 +80,25 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
     </NotesArea>
   );
 };
+
+const SelectedMenuPanel = styled.div`
+  cursor: pointer;
+  width: 100%;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    height: fit-content;
+    color: ${props => props.theme.textColorPrimary};
+    border: 1px solid ${props => props.theme.borderColor};
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+`;
+
 const GridLabelPinned = styled.div`
   margin-left: 10px;
   text-align: start;
@@ -83,7 +112,7 @@ const GridLabelOther = styled.div`
   font-weight: 600px;
   letter-spacing: 1px;
   margin-left: 10px;
-  margin-top: 60px;
+  margin-top: 16px;
   text-align: start;
   color: ${props => props.theme.textColorSecondary};
 `;

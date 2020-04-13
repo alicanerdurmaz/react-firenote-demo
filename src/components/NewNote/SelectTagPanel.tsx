@@ -41,7 +41,7 @@ const SelectTagPanel = ({ addTag, userId, tags }: Props) => {
   };
 
   const createTagHandler = () => {
-    firestoreAddTag(userId, tagInputText);
+    firestoreAddTag(tagInputText);
   };
 
   const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
