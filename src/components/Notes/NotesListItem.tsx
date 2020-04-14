@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import styled from 'styled-components/macro';
 import { INote } from '../../context/NoteContext/noteTypes';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
@@ -7,6 +7,7 @@ import { fireStorePinTest } from '../../context/NoteContext/firestoreFunctions';
 type Props = {
   note: INote;
   setSelectedNoteList: React.Dispatch<React.SetStateAction<string[]>>;
+  ref: React.MutableRefObject<Map<any, any>>;
 };
 type BoxContainerProps = {
   color: string;
@@ -19,7 +20,7 @@ type PinButtonProps = {
   pinned: boolean;
 };
 
-const NotesListItem = ({ note, setSelectedNoteList }: Props) => {
+const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => {
   const { uid, color, content, createdAt, lastEdited, tags, title, pinned } = note;
   const [selected, setSelected] = useState(false);
 
@@ -27,6 +28,7 @@ const NotesListItem = ({ note, setSelectedNoteList }: Props) => {
     e.stopPropagation();
     fireStorePinTest(!pinned, uid);
   };
+
   const selectNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     if (selected) {
@@ -37,6 +39,14 @@ const NotesListItem = ({ note, setSelectedNoteList }: Props) => {
 
     setSelected(!selected);
   };
+
+  useImperativeHandle(ref, () => ({
+    unSelect() {
+      if (selected) {
+        setSelected(false);
+      }
+    }
+  }));
   return (
     <BoxContainer color={color} selected={selected}>
       <StyledNotesListItem>
@@ -69,7 +79,7 @@ const NotesListItem = ({ note, setSelectedNoteList }: Props) => {
       </StyledNotesListItem>
     </BoxContainer>
   );
-};
+});
 
 const NoteHeader = styled.div`
   display: flex;

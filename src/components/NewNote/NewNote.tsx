@@ -33,7 +33,11 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
     title: noteToBeEdited ? noteToBeEdited.title : '',
     content: noteToBeEdited ? noteToBeEdited.content : '',
     tags: noteToBeEdited ? noteToBeEdited.tags : [],
-    color: noteToBeEdited ? noteToBeEdited.color : themeContext.backgroundColor,
+    color: noteToBeEdited
+      ? noteToBeEdited?.color === 'default'
+        ? themeContext.backgroundColor
+        : noteToBeEdited.color
+      : themeContext.backgroundColor,
     pinned: noteToBeEdited ? noteToBeEdited.pinned : false
   });
 
@@ -49,6 +53,8 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
       return;
     } else {
       noteToBeEdited ? firestoreUpdateNote(note, noteToBeEdited.uid) : firestoreAddNote(note);
+      setShowNewNoteModal(false);
+      setNoteToBeEdited(null);
     }
   };
 
@@ -178,7 +184,7 @@ const SaveButton = styled.button`
   }
   height: 24px;
   background: #364f6b;
-  color: ${props => props.theme.textColorPrimary};
+  color: ${props => props.theme.textColorInverse};
   border: 0px;
   font-size: 13px;
   font-weight: 500;
@@ -194,7 +200,7 @@ const SaveButton = styled.button`
 const CancelButton = styled.button`
   text-align: center;
   background: ${props => props.theme.warningColor};
-  color: ${props => props.theme.textColorPrimary};
+  color: ${props => props.theme.textColorInverse};
   border: 0px;
   font-size: 13px;
   font-weight: 500;

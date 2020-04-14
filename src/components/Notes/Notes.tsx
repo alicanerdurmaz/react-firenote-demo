@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components/macro';
 import NotesListItem from './NotesListItem';
@@ -13,6 +13,8 @@ type INotes = {
 const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
   const { notesList } = useNoteContext();
   const [selectedNoteList, setSelectedNoteList] = useState<string[]>([]);
+  const notesRef = useRef(new Map()).current;
+
   const noteItemClickHandler = (obj: INote, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     setShowNewNoteModal(true);
@@ -37,7 +39,12 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
                 }}
                 key={element.uid}
                 onClick={event => noteItemClickHandler(element, event)}>
-                <NotesListItem note={element} setSelectedNoteList={setSelectedNoteList}></NotesListItem>
+                <NotesListItem
+                  note={element}
+                  setSelectedNoteList={setSelectedNoteList}
+                  ref={inst =>
+                    inst === null ? notesRef.delete(element.uid) : notesRef.set(element.uid, inst)
+                  }></NotesListItem>
               </motion.div>
             ) : null
           )}
@@ -51,11 +58,25 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
     firestoreDeleteMultipleNotes(selectedNoteList);
     setSelectedNoteList([]);
   };
+
+  const escKeyHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') {
+      setSelectedNoteList([]);
+      notesRef.forEach(ref => ref.unSelect());
+    }
+  };
+  const unSelectAllNotes = () => {
+    setSelectedNoteList([]);
+    notesRef.forEach(ref => ref.unSelect());
+  };
+
   return (
-    <NotesArea>
+    <NotesArea onKeyDown={e => escKeyHandler(e)} tabIndex={1}>
       {selectedNoteList.length > 0 ? (
-        <SelectedMenuPanel onClick={deleteAllSelectedNotes}>
-          <span>DELETE ALL SELECTED NOTES</span>
+        <SelectedMenuPanel>
+          <UnselectAllButton onClick={unSelectAllNotes}></UnselectAllButton>
+          <SelectedItemCount onClick={unSelectAllNotes}>{selectedNoteList.length} Selected</SelectedItemCount>
+          <DeleteSelected onClick={deleteAllSelectedNotes}>DELETE ALL SELECTED NOTES</DeleteSelected>
         </SelectedMenuPanel>
       ) : null}
       {renderPinnedList()}
@@ -72,7 +93,12 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
               }}
               key={element.uid}
               onClick={event => noteItemClickHandler(element, event)}>
-              <NotesListItem note={element} setSelectedNoteList={setSelectedNoteList}></NotesListItem>
+              <NotesListItem
+                note={element}
+                setSelectedNoteList={setSelectedNoteList}
+                ref={inst =>
+                  inst === null ? notesRef.delete(element.uid) : notesRef.set(element.uid, inst)
+                }></NotesListItem>
             </motion.div>
           )
         )}
@@ -88,14 +114,33 @@ const SelectedMenuPanel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  span {
-    height: fit-content;
-    color: ${props => props.theme.textColorPrimary};
-    border: 1px solid ${props => props.theme.borderColor};
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 11px;
-    font-weight: 600;
+`;
+
+const DeleteSelected = styled.span`
+  height: fit-content;
+  color: ${props => props.theme.textColorPrimary};
+  border: 1px solid ${props => props.theme.borderColor};
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  margin: auto;
+`;
+
+const UnselectAllButton = styled.div`
+  background-image: ${props => props.theme.cancelButton};
+  background-position: center;
+  opacity: 0.6;
+  background-size: 24px 24px;
+  height: 24px;
+  width: 24px;
+  background-repeat: no-repeat;
+  margin-left: 16px;
+`;
+const SelectedItemCount = styled.span`
+  color: ${props => props.theme.textColorPrimary};
+  &:hover {
+    color: ${props => props.theme.colors.lightRed};
   }
 `;
 
@@ -120,6 +165,7 @@ const NotesArea = styled.div`
   grid-area: notes;
   overflow: auto;
   overflow-x: hidden;
+  margin-top: 20px;
 `;
 const NotesListPinned = styled.div`
   user-select: none;

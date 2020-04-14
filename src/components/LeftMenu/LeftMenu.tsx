@@ -67,7 +67,7 @@ const LeftMenuContainer = styled.div<StyleProps>`
     padding-top: 0px;
   }
   grid-area: left;
-  padding-top: 8px;
+
   width: 100%;
 `;
 
@@ -88,8 +88,7 @@ const LeftIconContainer = styled.div`
   width: 48px;
   height: 100%;
   * {
-    margin-top: 6px;
-    margin-left: 12px;
+    margin-top: 16px;
   }
 `;
 

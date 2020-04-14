@@ -8,7 +8,11 @@ import NewNote from './NewNote/NewNote';
 import { NoteContextProvider } from '../context/NoteContext/NoteContext';
 import { INote } from '../context/NoteContext/noteTypes';
 
-const MainPage = () => {
+type IMainPage = {
+  setTheme: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const MainPage = ({ setTheme }: IMainPage) => {
   const [leftMenuOpen, setLeftMenuOpen] = useState(false);
   const [showNewNoteModal, setShowNewNoteModal] = useState(false);
   const [noteToBeEdited, setNoteToBeEdited] = useState<INote | null>(null);
@@ -22,7 +26,7 @@ const MainPage = () => {
             noteToBeEdited={noteToBeEdited}
             setNoteToBeEdited={setNoteToBeEdited}></NewNote>
         )}
-        <Navbar setLeftMenuOpen={setLeftMenuOpen}></Navbar>
+        <Navbar setLeftMenuOpen={setLeftMenuOpen} setTheme={setTheme}></Navbar>
         <LeftMenu leftMenuOpen={leftMenuOpen} setLeftMenuOpen={setLeftMenuOpen}></LeftMenu>
         <Notes setShowNewNoteModal={setShowNewNoteModal} setNoteToBeEdited={setNoteToBeEdited}></Notes>
       </NoteContextProvider>

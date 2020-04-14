@@ -28,7 +28,6 @@ const TagList: React.FC = () => {
 };
 
 const StyledTagList = styled.div`
-  border-top: 1px solid ${props => props.theme.borderColor};
   border-bottom: 1px solid ${props => props.theme.borderColor};
   display: flex;
   flex-direction: column;

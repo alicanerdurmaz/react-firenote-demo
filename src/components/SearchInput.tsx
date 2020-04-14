@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components/macro';
 
 import { useDebounce } from '../hooks/useDebounce';
@@ -64,13 +64,17 @@ const SearchInput = () => {
 };
 
 const StyledSearchInputContainer = styled.div`
+  background: ${props => props.theme.backgroundColorSecondary};
+  border-radius: 4px;
   display: flex;
-  padding: 4px 0px;
-  margin-left: 16px;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 16px;
+  flex: 1;
 `;
 const StyledSearchInput = styled.input`
   font-size: 16px;
+  padding: 0px 4px;
   width: 100%;
   ::placeholder,
   ::-webkit-input-placeholder {

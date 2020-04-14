@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useContext } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { hot } from 'react-hot-loader/root';
 import styled, { ThemeProvider } from 'styled-components/macro';
 import { GlobalStyles } from './styles/GlobalStyles';
@@ -7,6 +7,20 @@ import RouteController from './components/RouteController';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
+  const [theme, setTheme] = useState(() => {
+    const theme = localStorage.getItem('theme');
+    if (theme === null) {
+      localStorage.setItem('theme', 'dark');
+      return 'dark';
+    } else if (theme === 'light') {
+      localStorage.setItem('theme', 'light');
+      return 'light';
+    } else {
+      localStorage.setItem('theme', 'dark');
+      return 'dark';
+    }
+  });
+
   useEffect(() => {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -22,11 +36,11 @@ function App() {
   }
   return (
     <AuthProvider>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
         <Fragment>
           <GlobalStyles />
           <AppContainer>
-            <RouteController></RouteController>
+            <RouteController setTheme={setTheme}></RouteController>
           </AppContainer>
         </Fragment>
       </ThemeProvider>
