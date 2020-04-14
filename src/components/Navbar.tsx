@@ -11,7 +11,7 @@ type Props = {
 };
 const Navbar = ({ setLeftMenuOpen, setTheme }: Props) => {
   const themeContext = useContext(ThemeContext);
-  const [settingsOpen, setSettingsOpen] = useState(true);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsPanel = useRef<HTMLDivElement | null>(null);
   const settingsButton = useRef<HTMLDivElement | null>(null);
 
