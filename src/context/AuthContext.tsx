@@ -7,10 +7,6 @@ export const AuthProvider: React.FC = props => {
   const [currentUser, setCurrentUser] = useState<firebase.User | null | undefined>(undefined);
 
   useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
-
-  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(authUser => {
       authUser ? setCurrentUser(authUser) : setCurrentUser(null);
     });

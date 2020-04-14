@@ -52,7 +52,9 @@ const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => 
       <StyledNotesListItem>
         <NoteHeader>
           <SelectNoteButton onClick={e => selectNoteHandler(e)} selected={selected}></SelectNoteButton>
-          <NoteTitle>{title}</NoteTitle>
+          <NoteTitle>
+            <span>{title}</span>
+          </NoteTitle>
           <PinButton onClick={e => pinNoteHandler(e)} pinned={pinned}></PinButton>
         </NoteHeader>
         <NoteContent>
@@ -84,38 +86,37 @@ const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => 
 const NoteHeader = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `;
 
 const SelectNoteButton = styled.div<SelectNoteButtonProps>`
+  background: ${props => props.theme.backgroundColorSecondary};
   opacity: ${props => (props.selected ? 1 : 0)};
-  padding: 2px;
   background-size: 24px 24px;
+  border-radius: 24px;
   height: 24px;
   width: 24px;
-  transform: translate(-8px, -8px);
   background-image: ${props => props.theme.selectNoteIcon};
   transition: opacity 190ms linear;
   background-repeat: no-repeat;
   position: absolute;
-`;
-const NoteTitle = styled.div`
-  color: ${props => props.theme.textColorPrimary};
-  text-align: start;
-  margin-bottom: 8px;
-  margin-top: 10px;
-  font-weight: 600;
-  padding: 0px 16px;
-  flex: 2;
+  left: -10px;
+  top: -10px;
+  transition: transform 190ms linear, transform 60ms linear, visibility 60ms linear;
+  &:hover {
+    transform: scale(1.3);
+  }
 `;
 
 const PinButton = styled.div<PinButtonProps>`
   visibility: ${props => (props.pinned ? 'visible' : 'hidden')};
   user-select: none;
   background-size: 24px 24px;
-  height: 24px;
-  width: 24px;
+  background: ${props => props.theme.backgroundColorSecondary};
+  border-radius: 30px;
+  height: 30px;
+  width: 30px;
   opacity: 0.5;
-  padding: 8px 12px 0px 0px;
   background-position: center;
   background-repeat: no-repeat;
   background-image: ${props => (props.pinned ? props.theme.pinnedIcon : props.theme.pinIcon)};
@@ -125,16 +126,31 @@ const PinButton = styled.div<PinButtonProps>`
     opacity: 1;
     transform: rotate(40deg);
   }
+  position: absolute;
+  right: -10px;
+  top: -10px;
+`;
+
+const NoteTitle = styled.div`
+  color: ${props => props.theme.textColorPrimary};
+  text-align: start;
+  font-weight: 600;
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  width: 100%;
+  height: 100%;
 `;
 
 const BoxContainer = styled.div<BoxContainerProps>`
   @media (max-width: 900px) {
-    min-height: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
   }
   will-change: transform;
-  min-height: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
+
   border: 1px solid ${props => (props.selected ? props.theme.colors.lightBlue : props.theme.borderColor)};
   border-radius: 4px;
   background: ${props => props.theme.backgroundColor};
@@ -153,17 +169,22 @@ const BoxContainer = styled.div<BoxContainerProps>`
 `;
 
 const StyledNotesListItem = styled.div`
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-content: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px;
+  padding-bottom: 8px;
 `;
 
 const NoteContent = styled.div`
   color: ${props => props.theme.textColorPrimary};
   text-align: start;
-  padding: 0px 16px;
-
+  margin: 8px 0px;
+  width: 100%;
   span {
     text-overflow: ellipsis;
     white-space: pre-wrap;
@@ -178,12 +199,13 @@ const NoteContent = styled.div`
 
 const TagList = styled.div`
   cursor: pointer;
-  margin-top: 8px;
-  margin-bottom: 2px;
-  padding: 0px 8px;
   display: flex;
   flex-wrap: wrap;
   -webkit-tap-highlight-color: transparent;
+  margin-top: auto;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
 `;
 const TagTextContainer = styled.div`
   user-select: none;

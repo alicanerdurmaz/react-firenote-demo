@@ -65,10 +65,12 @@ const LeftMenuContainer = styled.div<StyleProps>`
     flex-direction: row;
     background: rgba(0, 0, 0, 0.5);
     padding-top: 0px;
+    overflow: hidden;
   }
   grid-area: left;
-
   width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const LeftMenuHeader = styled.div`
