@@ -3,6 +3,7 @@ import styled, { ThemeContext } from 'styled-components/macro';
 
 import BarsIcon from '../assets/Icons/BarsIcon';
 import SearchInput from './SearchInput';
+import { auth } from './Firebase/firebase';
 
 type Props = {
   setLeftMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,6 +49,18 @@ const Navbar = ({ setLeftMenuOpen, setTheme }: Props) => {
       setTheme('dark');
     }
   };
+
+  const signOutHandler = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      /* @ TODO
+				send information to developer
+				show proper error message to user
+			*/
+    }
+  };
+
   return (
     <NavbarContainer>
       <Panel>
@@ -65,7 +78,7 @@ const Navbar = ({ setLeftMenuOpen, setTheme }: Props) => {
                 {themeContext.name === 'dark' ? ' light theme' : ' dark theme'}
               </SettingsListItem>
               <SettingsListItem>About</SettingsListItem>
-              <SettingsListItem>Sign out</SettingsListItem>
+              <SettingsListItem onClick={signOutHandler}>Sign out</SettingsListItem>
             </SettingsList>
           </SettingsContainer>
         )}
@@ -92,6 +105,7 @@ const Panel = styled.div`
 `;
 
 const BrandName = styled.div`
+  cursor: pointer;
   color: ${props => props.theme.textColorPrimary};
   font-size: 22px;
   text-align: center;

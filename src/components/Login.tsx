@@ -15,7 +15,22 @@ const Login = () => {
     try {
       await auth.signInWithPopup(googleProvider);
     } catch (error) {
+      /* @ TODO
+				send information to developer
+				show proper error message to user
+			*/
+    }
+  };
+
+  const handleAnonymouslyLogin = async () => {
+    try {
+      await auth.signInAnonymously();
+    } catch (error) {
       console.log(error);
+      /* @ TODO
+			send information to developer
+			show proper error message to user
+		*/
     }
   };
 
@@ -55,7 +70,9 @@ const Login = () => {
             alt='anonym icon'
           />
         </ButtonIcon>
-        <ButtonText style={{ color: '#000', marginLeft: '4px' }}>Continue as guest</ButtonText>
+        <ButtonText style={{ color: '#000', marginLeft: '4px' }} onClick={handleAnonymouslyLogin}>
+          Continue as guest
+        </ButtonText>
       </Button>
     </StyledLoginPage>
   );

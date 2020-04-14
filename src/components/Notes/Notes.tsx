@@ -72,6 +72,7 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
 
   return (
     <NotesArea onKeyDown={e => escKeyHandler(e)} tabIndex={1}>
+      {notesList.length > 0 ? null : <InfoMessageText>There is no note has been saved</InfoMessageText>}
       {selectedNoteList.length > 0 ? (
         <SelectedMenuPanel>
           <UnselectAllButton onClick={unSelectAllNotes}></UnselectAllButton>
@@ -106,7 +107,9 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
     </NotesArea>
   );
 };
-
+const InfoMessageText = styled.span`
+  color: ${props => props.theme.textColorPrimary};
+`;
 const SelectedMenuPanel = styled.div`
   cursor: pointer;
   width: 100%;
