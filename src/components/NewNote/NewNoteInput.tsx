@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 import TextareaAutosize from 'react-textarea-autosize';
-import { INote } from '../../context/NoteContext/noteTypes';
-import { NoteContext } from '../../context/NoteContext/NoteContext';
 
 type Notes = {
   title: string;
@@ -24,9 +22,9 @@ const NewNoteInput = ({ color, setNote, note }: Props) => {
   const newNoteInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const name = e.target.name;
     const value = e.target.value;
-    setNote(prevState => ({
+    setNote((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -39,7 +37,7 @@ const NewNoteInput = ({ color, setNote, note }: Props) => {
           maxLength={30}
           maxRows={1}
           placeholder='Title'
-          onChange={e => newNoteInput(e)}
+          onChange={(e) => newNoteInput(e)}
           name='title'></TextareaAutosize>
       </TitleInput>
       <ContentInput bgColor={color}>
@@ -48,7 +46,7 @@ const NewNoteInput = ({ color, setNote, note }: Props) => {
           maxLength={999}
           maxRows={6}
           placeholder='Take a note...'
-          onChange={e => newNoteInput(e)}
+          onChange={(e) => newNoteInput(e)}
           name='content'></TextareaAutosize>
       </ContentInput>
     </InputArea>
@@ -61,8 +59,8 @@ const TitleInput = styled.div<styleProps>`
     resize: none;
     width: 100%;
     height: auto;
-    background: ${props => props.bgColor};
-    color: ${props => props.theme.textColorPrimary};
+    background: ${(props) => props.bgColor};
+    color: ${(props) => props.theme.textColorPrimary};
     font-size: 16px;
     overflow: hidden;
   }
@@ -78,24 +76,24 @@ const ContentInput = styled.div<styleProps>`
     resize: none;
     font-size: 16px;
     width: 100%;
-    background: ${props => props.bgColor};
-    color: ${props => props.theme.textColorPrimary};
+    background: ${(props) => props.bgColor};
+    color: ${(props) => props.theme.textColorPrimary};
   }
   textarea::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    background-color: ${props => props.bgColor};
+    background-color: ${(props) => props.bgColor};
   }
   textarea::-webkit-scrollbar {
     width: 4px;
-    background-color: ${props => props.bgColor};
+    background-color: ${(props) => props.bgColor};
   }
   textarea::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: ${props => props.theme.backgroundColorSecondary};
+    background-color: ${(props) => props.theme.backgroundColorSecondary};
   }
 `;
 

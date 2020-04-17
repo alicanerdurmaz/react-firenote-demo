@@ -1,7 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { useNoteContext } from '../../context/NoteContext/NoteContext';
-import TagListItem from './TagListItem';
 import LeftIcon from '../../assets/Icons/LeftIcon';
 import TagList from './TagList';
 
@@ -38,8 +36,8 @@ const LeftSideMenu: React.FC<Props> = ({ leftMenuOpen, setLeftMenuOpen }: Props)
   };
 
   return (
-    <LeftMenuContainer onClick={e => closeLeftMenu(e)} leftMenuOpen={leftMenuOpen}>
-      <LeftMenuContent onClick={e => handleLeftMenu(e)}>
+    <LeftMenuContainer onClick={(e) => closeLeftMenu(e)} leftMenuOpen={leftMenuOpen}>
+      <LeftMenuContent onClick={(e) => handleLeftMenu(e)}>
         <LeftMenuHeader>
           <LeftIconContainer onClick={closeLeftMenu}>
             <LeftIcon width={22} height={22}></LeftIcon>
@@ -101,13 +99,13 @@ const LeftMenuContent = styled.div`
     will-change: width;
     width: 80%;
     opacity: 1;
-    background: ${proprs => proprs.theme.backgroundColor};
+    background: ${(proprs) => proprs.theme.backgroundColor};
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.4);
   }
 
   width: 100%;
   height: 100%;
-  background: ${proprs => proprs.theme.backgroundColor};
+  background: ${(proprs) => proprs.theme.backgroundColor};
 `;
 
 export default LeftSideMenu;

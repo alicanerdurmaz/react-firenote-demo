@@ -1,7 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import styled from 'styled-components/macro';
 import { INote } from '../../context/NoteContext/noteTypes';
-import { useNoteContext } from '../../context/NoteContext/NoteContext';
 import { fireStorePinTest } from '../../context/NoteContext/firestoreFunctions';
 
 type Props = {
@@ -21,7 +20,7 @@ type PinButtonProps = {
 };
 
 const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => {
-  const { uid, color, content, createdAt, lastEdited, tags, title, pinned } = note;
+  const { uid, color, content, tags, title, pinned } = note;
   const [selected, setSelected] = useState(false);
 
   const pinNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -32,9 +31,9 @@ const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => 
   const selectNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     if (selected) {
-      setSelectedNoteList(prevState => prevState.filter(e => e !== uid));
+      setSelectedNoteList((prevState) => prevState.filter((e) => e !== uid));
     } else {
-      setSelectedNoteList(prevState => [...prevState, uid]);
+      setSelectedNoteList((prevState) => [...prevState, uid]);
     }
 
     setSelected(!selected);
@@ -45,17 +44,17 @@ const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => 
       if (selected) {
         setSelected(false);
       }
-    }
+    },
   }));
   return (
     <BoxContainer color={color} selected={selected}>
       <StyledNotesListItem>
         <NoteHeader>
-          <SelectNoteButton onClick={e => selectNoteHandler(e)} selected={selected}></SelectNoteButton>
+          <SelectNoteButton onClick={(e) => selectNoteHandler(e)} selected={selected}></SelectNoteButton>
           <NoteTitle>
             <span>{title}</span>
           </NoteTitle>
-          <PinButton onClick={e => pinNoteHandler(e)} pinned={pinned}></PinButton>
+          <PinButton onClick={(e) => pinNoteHandler(e)} pinned={pinned}></PinButton>
         </NoteHeader>
         <NoteContent>
           <span>{content}</span>
@@ -90,13 +89,13 @@ const NoteHeader = styled.div`
 `;
 
 const SelectNoteButton = styled.div<SelectNoteButtonProps>`
-  background: ${props => props.theme.backgroundColorSecondary};
-  opacity: ${props => (props.selected ? 1 : 0)};
+  background: ${(props) => props.theme.backgroundColorSecondary};
+  opacity: ${(props) => (props.selected ? 1 : 0)};
   background-size: 24px 24px;
   border-radius: 24px;
   height: 24px;
   width: 24px;
-  background-image: ${props => props.theme.selectNoteIcon};
+  background-image: ${(props) => props.theme.selectNoteIcon};
   transition: opacity 190ms linear;
   background-repeat: no-repeat;
   position: absolute;
@@ -109,17 +108,17 @@ const SelectNoteButton = styled.div<SelectNoteButtonProps>`
 `;
 
 const PinButton = styled.div<PinButtonProps>`
-  visibility: ${props => (props.pinned ? 'visible' : 'hidden')};
+  visibility: ${(props) => (props.pinned ? 'visible' : 'hidden')};
   user-select: none;
   background-size: 24px 24px;
-  background: ${props => props.theme.backgroundColorSecondary};
+  background: ${(props) => props.theme.backgroundColorSecondary};
   border-radius: 30px;
   height: 30px;
   width: 30px;
   opacity: 0.5;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: ${props => (props.pinned ? props.theme.pinnedIcon : props.theme.pinIcon)};
+  background-image: ${(props) => (props.pinned ? props.theme.pinnedIcon : props.theme.pinIcon)};
   will-change: transform;
   transition: opacity 190ms linear, transform 60ms linear, visibility 60ms linear;
   &:hover {
@@ -132,7 +131,7 @@ const PinButton = styled.div<PinButtonProps>`
 `;
 
 const NoteTitle = styled.div`
-  color: ${props => props.theme.textColorPrimary};
+  color: ${(props) => props.theme.textColorPrimary};
   text-align: start;
   font-weight: 600;
   width: 100%;
@@ -151,9 +150,9 @@ const BoxContainer = styled.div<BoxContainerProps>`
   width: 100%;
   height: 100%;
 
-  border: 1px solid ${props => (props.selected ? props.theme.colors.lightBlue : props.theme.borderColor)};
+  border: 1px solid ${(props) => (props.selected ? props.theme.colors.lightBlue : props.theme.borderColor)};
   border-radius: 4px;
-  background: ${props => props.theme.backgroundColor};
+  background: ${(props) => props.theme.backgroundColor};
   transition: opacity 190ms linear;
   cursor: pointer;
   &:hover {
@@ -164,7 +163,7 @@ const BoxContainer = styled.div<BoxContainerProps>`
     ${SelectNoteButton} {
       opacity: 1;
     }
-    border: 1px solid ${props => (props.selected ? props.theme.colors.lightBlue : props.theme.textColorPrimary)};
+    border: 1px solid ${(props) => (props.selected ? props.theme.colors.lightBlue : props.theme.textColorPrimary)};
   }
 `;
 
@@ -181,7 +180,7 @@ const StyledNotesListItem = styled.div`
 `;
 
 const NoteContent = styled.div`
-  color: ${props => props.theme.textColorPrimary};
+  color: ${(props) => props.theme.textColorPrimary};
   text-align: start;
   margin: 8px 0px;
   width: 100%;
@@ -221,7 +220,7 @@ const TagTextContainer = styled.div`
 `;
 const TagText = styled.div`
   user-select: none;
-  color: ${props => props.theme.textColorSecondary};
+  color: ${(props) => props.theme.textColorSecondary};
   font-size: 14px;
   max-width: 24ch;
   overflow: hidden;

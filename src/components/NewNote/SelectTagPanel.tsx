@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import TagsIcon from '../../assets/Icons/TagsIcon';
 import { firestoreAddTag } from '../../context/NoteContext/firestoreFunctions';
@@ -34,7 +34,7 @@ const SelectTagPanel = ({ addTag, userId, tags }: Props) => {
       return;
     }
     if (!e.target.checked) {
-      const prevState = [...checkedTags].filter(i => i !== e.target.value);
+      const prevState = [...checkedTags].filter((i) => i !== e.target.value);
       setCheckedTags(prevState);
       return;
     }
@@ -56,23 +56,23 @@ const SelectTagPanel = ({ addTag, userId, tags }: Props) => {
       <HiddenPanel>
         <TagInputContainer>
           <TagInput
-            onBlur={e => onBlurHandler(e)}
+            onBlur={(e) => onBlurHandler(e)}
             maxLength={24}
             placeholder='Enter a tag or search'
             value={tagInputText}
-            onChange={e => tagInputOnChangeHandler(e)}></TagInput>
+            onChange={(e) => tagInputOnChangeHandler(e)}></TagInput>
         </TagInputContainer>
 
         <SavedTagsContainer>
           <SavedTagsList>
-            {tagsList.map(e => {
+            {tagsList.map((e) => {
               if (!e.includes(tagInputText)) {
                 return null;
               }
               return (
                 <SavedTagsListItem key={e}>
                   <CheckboxContainer>
-                    <Checkbox type='checkbox' id={e} name={e} value={e} onChange={e => checkBoxHandler(e)}></Checkbox>
+                    <Checkbox type='checkbox' id={e} name={e} value={e} onChange={(e) => checkBoxHandler(e)}></Checkbox>
                     <Label htmlFor={e}>
                       <span>{e}</span>
                     </Label>
@@ -102,7 +102,7 @@ const Divider = styled.div`
   width: 100%;
   left: 0;
   position: absolute;
-  border-top: 1px solid ${props => props.theme.borderColor};
+  border-top: 1px solid ${(props) => props.theme.borderColor};
   margin-top: 4px;
   margin-bottom: 4px;
 `;
@@ -138,7 +138,7 @@ const Summary = styled.summary`
 const HiddenPanel = styled.div`
   -webkit-tap-highlight-color: transparent;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  background-color: ${props => props.theme.backgroundColorSecondary};
+  background-color: ${(props) => props.theme.backgroundColorSecondary};
   border-radius: 4px;
   text-align: start;
   padding: 4px 8px;
@@ -154,7 +154,8 @@ const TagInputContainer = styled.div`
 `;
 const TagInput = styled.input`
   width: 100%;
-  color: ${props => props.theme.textColorPrimary};
+  font-size: 16px;
+  color: ${(props) => props.theme.textColorPrimary};
 `;
 
 const CreateTagContainer = styled.div`
@@ -171,7 +172,7 @@ const CreateTagText = styled.div`
   div {
     height: max-content;
     font-size: 14px;
-    color: ${props => props.theme.textColorPrimary};
+    color: ${(props) => props.theme.textColorPrimary};
     display: inline-block;
     margin-top: 5px;
     word-wrap: break-word;
@@ -187,8 +188,8 @@ const PlusIcon = styled.div`
   min-width: 16px;
   min-height: 16px;
   margin-left: -2px;
-  background: linear-gradient(${props => props.theme.textColorPrimary}, ${props => props.theme.textColorPrimary}),
-    linear-gradient(${props => props.theme.textColorPrimary}, ${props => props.theme.textColorPrimary});
+  background: linear-gradient(${(props) => props.theme.textColorPrimary}, ${(props) => props.theme.textColorPrimary}),
+    linear-gradient(${(props) => props.theme.textColorPrimary}, ${(props) => props.theme.textColorPrimary});
   background-position: center;
   background-size: 50% 2px, 2px 50%; /*thickness = 2px, length = 50% (25px)*/
   background-repeat: no-repeat;
@@ -196,8 +197,9 @@ const PlusIcon = styled.div`
 
 const SavedTagsContainer = styled.div`
   padding: 4px 0px;
-  padding-top: 16px;
+  padding-top: 8px;
   max-height: 500px;
+  overflow: auto;
 `;
 const SavedTagsList = styled.div`
   overflow: auto;
@@ -208,7 +210,7 @@ const SavedTagsList = styled.div`
 `;
 const SavedTagsListItem = styled.div`
   user-select: none;
-  color: ${props => props.theme.textColorPrimary};
+  color: ${(props) => props.theme.textColorPrimary};
   width: 100%;
   height: 24px;
 `;
@@ -232,7 +234,7 @@ const Label = styled.label`
   &::before {
     height: 16px;
     width: 16px;
-    border: 1px solid ${props => props.theme.textColorPrimary};
+    border: 1px solid ${(props) => props.theme.textColorPrimary};
     left: 0px;
     top: 3px;
   }
@@ -247,7 +249,7 @@ const Label = styled.label`
     top: 7px;
   }
   :hover {
-    background: ${props => props.theme.backgroundColor};
+    background: ${(props) => props.theme.backgroundColor};
   }
   span {
     margin-left: 22px;
@@ -262,7 +264,7 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
   }
 
   &:focus + ${Label} {
-    background: ${props => props.theme.backgroundColor};
+    background: ${(props) => props.theme.backgroundColor};
   }
 `;
 

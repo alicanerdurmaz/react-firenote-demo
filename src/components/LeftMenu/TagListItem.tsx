@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 import LabelIcon from '../../assets/Icons/LabelIcon';
 import { useNoteContext } from '../../context/NoteContext/NoteContext';
@@ -20,8 +20,8 @@ const TagListItem = ({ tagName, selected }: Props) => {
       dispatchSelectedTagList({
         type: 'added',
         payload: {
-          tag: tagName
-        }
+          tag: tagName,
+        },
       });
       if (searchTerm.length > 0) setSearchTerm('');
     }
@@ -29,8 +29,8 @@ const TagListItem = ({ tagName, selected }: Props) => {
       dispatchSelectedTagList({
         type: 'removed',
         payload: {
-          tag: tagName
-        }
+          tag: tagName,
+        },
       });
     }
   };
@@ -51,7 +51,7 @@ const StyledTagListItem = styled.div<StyledProps>`
   cursor: pointer;
   display: flex;
   &:hover {
-    background: ${props => props.theme.backgroundColorSecondary};
+    background: ${(props) => props.theme.backgroundColorSecondary};
   }
 `;
 const ItemContainer = styled.div`
@@ -66,7 +66,7 @@ const ItemContainer = styled.div`
 `;
 const TagName = styled.div<StyledProps>`
   user-select: none;
-  color: ${props => (props.selected ? props.theme.textColorPrimary : props.theme.textColorSecondary)};
+  color: ${(props) => (props.selected ? props.theme.textColorPrimary : props.theme.textColorSecondary)};
   font-weight: 600;
   margin: 0px 0px 3px 8px;
   font-family: 'Open Sans', sans-serif;

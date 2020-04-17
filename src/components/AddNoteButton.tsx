@@ -1,14 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import * as ROUTES from '../helpers/PageList';
-
 type Props = {
   setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const AddNoteButton = ({ setShowNewNoteModal }: Props) => {
   return (
-    <StyledAddNoteButtonContainer onClick={e => setShowNewNoteModal(true)}>
+    <StyledAddNoteButtonContainer onClick={(e) => setShowNewNoteModal(true)}>
       <Fab>
         <svg
           width='24px'
@@ -37,7 +35,7 @@ const StyledAddNoteButtonContainer = styled.div`
   right: 0;
   margin-right: 16px;
   z-index: 5;
-  background: ${props => props.theme.backgroundColor};
+  background: ${(props) => props.theme.backgroundColor};
   border-radius: 50%;
 `;
 const Fab = styled.div`
@@ -45,7 +43,7 @@ const Fab = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${props => props.theme.backgroundColorsecondary};
+  background: ${(props) => props.theme.backgroundColorsecondary};
   display: flex;
   align-items: center;
   justify-content: center;

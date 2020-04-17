@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 
 import { useDebounce } from '../hooks/useDebounce';
-import SearchIcon from '../assets/Icons/SearchIcon';
 import CancelIcon from '../assets/Icons/CancelIcon';
 import { useNoteContext } from '../context/NoteContext/NoteContext';
 
@@ -51,7 +50,7 @@ const SearchInput = () => {
   return (
     <StyledSearchInputContainer>
       <StyledSearchInput
-        onChange={e => handleInput(e)}
+        onChange={(e) => handleInput(e)}
         value={input}
         placeholder='Search your notes'></StyledSearchInput>
       {input.length > 0 && (
@@ -64,7 +63,7 @@ const SearchInput = () => {
 };
 
 const StyledSearchInputContainer = styled.div`
-  background: ${props => props.theme.backgroundColorSecondary};
+  background: ${(props) => props.theme.backgroundColorSecondary};
   border-radius: 4px;
   display: flex;
   justify-content: center;

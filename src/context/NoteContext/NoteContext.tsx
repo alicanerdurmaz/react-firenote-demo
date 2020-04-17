@@ -1,12 +1,12 @@
 import React, { useState, createContext, useEffect, useContext, useReducer } from 'react';
 import { firestore } from '../../components/Firebase/firebase';
 import { useAuthContext } from '../AuthContext';
-import { INoteContext, CustomQuery } from './noteTypes';
+import { INoteContext } from './noteTypes';
 import { noteListReducer, selectedTagListReducer } from './noteReducer';
 
 export const NoteContext = createContext<INoteContext | undefined>(undefined);
 
-export const NoteContextProvider: React.FC = props => {
+export const NoteContextProvider: React.FC = (props) => {
   const { currentUser } = useAuthContext();
   const [notesList, dispatchNoteList] = useReducer(noteListReducer, []);
   const [selectedTagList, dispatchSelectedTagList] = useReducer(selectedTagListReducer, []);
@@ -44,8 +44,8 @@ export const NoteContextProvider: React.FC = props => {
             type: 'added',
             payload: {
               data: change.doc.data(),
-              id: change.doc.id
-            }
+              id: change.doc.id,
+            },
           });
         }
         if (change.type === 'modified') {
@@ -53,8 +53,8 @@ export const NoteContextProvider: React.FC = props => {
             type: 'modified',
             payload: {
               data: change.doc.data(),
-              id: change.doc.id
-            }
+              id: change.doc.id,
+            },
           });
         }
         if (change.type === 'removed') {
@@ -62,8 +62,8 @@ export const NoteContextProvider: React.FC = props => {
             type: 'removed',
             payload: {
               data: change.doc.data(),
-              id: change.doc.id
-            }
+              id: change.doc.id,
+            },
           });
         }
       });
