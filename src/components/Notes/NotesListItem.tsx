@@ -152,7 +152,7 @@ const BoxContainer = styled.div<BoxContainerProps>`
 
   border: 1px solid ${(props) => (props.selected ? props.theme.colors.lightBlue : props.theme.borderColor)};
   border-radius: 4px;
-  background: ${(props) => props.theme.backgroundColor};
+  background: ${(props) => props.color};
   transition: opacity 190ms linear;
   cursor: pointer;
   &:hover {
