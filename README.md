@@ -15,3 +15,5 @@
   - Styed Components 💅 
 
 🚀 [Live Demo](https://alicanerdurmaz.github.io/react-firenote-demo/)
+
+![screenshot](screenshot.png)
