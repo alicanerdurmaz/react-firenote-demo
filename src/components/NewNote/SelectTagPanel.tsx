@@ -42,6 +42,7 @@ const SelectTagPanel = ({ addTag, userId, tags }: Props) => {
 
   const createTagHandler = () => {
     firestoreAddTag(tagInputText);
+    setTagInputText('');
   };
 
   const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -153,6 +154,7 @@ const TagInputContainer = styled.div`
   display: flex;
 `;
 const TagInput = styled.input`
+  padding-top: 4px;
   width: 100%;
   font-size: 16px;
   color: ${(props) => props.theme.textColorPrimary};
@@ -196,7 +198,7 @@ const PlusIcon = styled.div`
 `;
 
 const SavedTagsContainer = styled.div`
-  padding: 4px 0px;
+  padding: 0px 0px;
   padding-top: 8px;
   max-height: 500px;
   overflow: auto;

@@ -61,9 +61,11 @@ export const firestoreDeleteNote = (docId: string) => {
 		.collection(auth.currentUser!.uid)
 		.doc('notes')
 		.collection('notesCollection').doc(docId).delete().then(function () {
-			console.log("Document successfully deleted!");
 		}).catch(function (error) {
-			console.error("Error removing document: ", error);
+			/* @ TODO
+				 send information to developer
+				 show proper error message to user
+			 */
 		});
 }
 export const firestoreDeleteMultipleNotes = (docIdList: string[]) => {
@@ -83,10 +85,19 @@ export const firestoreAddTag = (tag: string) => {
 	const tagRef = firestore
 		.collection(auth.currentUser!.uid)
 		.doc('tags');
+
 	tagRef.update({
 		tagList: firebase.firestore.FieldValue.arrayUnion(tag)
+	}).catch((error) => {
+		firestore
+			.collection(auth.currentUser!.uid)
+			.doc('tags').set({
+				tagList: firebase.firestore.FieldValue.arrayUnion(tag)
+			});
 	});
 }
+
+
 export const firestoreRemoveTag = (tag: string, docId: string) => {
 	const tagRef = firestore
 		.collection(auth.currentUser!.uid)
