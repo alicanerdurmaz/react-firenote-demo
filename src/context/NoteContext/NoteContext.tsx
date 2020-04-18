@@ -38,6 +38,7 @@ export const NoteContextProvider: React.FC = (props) => {
     }
 
     const unsubscribeNoteList = notesCollectionRefWithQuery.orderBy('lastEdited', 'asc').onSnapshot(function(snapshot) {
+      console.log('subs notes');
       snapshot.docChanges().forEach(function(change) {
         if (change.type === 'added') {
           dispatchNoteList({

@@ -58,6 +58,7 @@ const Login = () => {
     return (
       <StyledLoadingScreen>
         <Loader></Loader>
+        <span>Trying to login</span>
       </StyledLoadingScreen>
     );
   }
@@ -118,7 +119,7 @@ const Button = styled.div<StyledButtonProps>`
   width: 220px;
   height: 40px;
   border-width: 0;
-  background: ${props => props.bgColor};
+  background: ${(props) => props.bgColor};
   color: #737373;
   border-radius: 2px;
   white-space: nowrap;
@@ -157,16 +158,17 @@ const ButtonText = styled.span`
 `;
 
 const StyledLoadingScreen = styled.div`
-  position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   span {
     width: max-content;
     height: max-content;
-    color: ${props => props.theme.textColorPrimary};
+    color: ${(props) => props.theme.textColorPrimary};
+    font-size: 24px;
   }
 `;
 
@@ -181,7 +183,7 @@ const rotate = keyframes`
   }
 `;
 const Loader = styled.div`
-  margin: 60px auto;
+  margin-bottom: 16px;
   font-size: 10px;
   position: relative;
   text-indent: -9999em;
