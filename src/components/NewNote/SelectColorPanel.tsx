@@ -21,20 +21,20 @@ const SelectColorPanel = ({ selectColor, selectedColorProp }: Props) => {
         <CircleContainer>
           <Circle
             color={themeContext.backgroundColor}
-            onClick={e => selectColor(themeContext.backgroundColor)}
+            onClick={(e) => selectColor('default')}
             selectedColor={selectedColorProp}
           />
-          <Circle color='#5c2b29' onClick={e => selectColor('#5c2b29')} selectedColor={selectedColorProp} />
-          <Circle color='#614a19' onClick={e => selectColor('#614a19')} selectedColor={selectedColorProp} />
-          <Circle color='#635d19' onClick={e => selectColor('#635d19')} selectedColor={selectedColorProp} />
-          <Circle color='#345920' onClick={e => selectColor('#345920')} selectedColor={selectedColorProp} />
-          <Circle color='#16504b' onClick={e => selectColor('#16504b')} selectedColor={selectedColorProp} />
-          <Circle color='#2d555e' onClick={e => selectColor('#2d555e')} selectedColor={selectedColorProp} />
-          <Circle color='#1e3a5f' onClick={e => selectColor('#1e3a5f')} selectedColor={selectedColorProp} />
-          <Circle color='#42275e' onClick={e => selectColor('#42275e')} selectedColor={selectedColorProp} />
-          <Circle color='#5b2245' onClick={e => selectColor('#5b2245')} selectedColor={selectedColorProp} />
-          <Circle color='#442f19' onClick={e => selectColor('#442f19')} selectedColor={selectedColorProp} />
-          <Circle color='#3c3f43' onClick={e => selectColor('#3c3f43')} selectedColor={selectedColorProp} />
+          <Circle color='#5c2b29' onClick={(e) => selectColor('#5c2b29')} selectedColor={selectedColorProp} />
+          <Circle color='#614a19' onClick={(e) => selectColor('#614a19')} selectedColor={selectedColorProp} />
+          <Circle color='#635d19' onClick={(e) => selectColor('#635d19')} selectedColor={selectedColorProp} />
+          <Circle color='#345920' onClick={(e) => selectColor('#345920')} selectedColor={selectedColorProp} />
+          <Circle color='#16504b' onClick={(e) => selectColor('#16504b')} selectedColor={selectedColorProp} />
+          <Circle color='#2d555e' onClick={(e) => selectColor('#2d555e')} selectedColor={selectedColorProp} />
+          <Circle color='#1e3a5f' onClick={(e) => selectColor('#1e3a5f')} selectedColor={selectedColorProp} />
+          <Circle color='#42275e' onClick={(e) => selectColor('#42275e')} selectedColor={selectedColorProp} />
+          <Circle color='#5b2245' onClick={(e) => selectColor('#5b2245')} selectedColor={selectedColorProp} />
+          <Circle color='#442f19' onClick={(e) => selectColor('#442f19')} selectedColor={selectedColorProp} />
+          <Circle color='#3c3f43' onClick={(e) => selectColor('#3c3f43')} selectedColor={selectedColorProp} />
         </CircleContainer>
       </HiddenPanel>
     </Details>
@@ -70,7 +70,7 @@ const Summary = styled.summary`
 `;
 const HiddenPanel = styled.div`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  background-color: ${props => props.theme.backgroundColorSecondary};
+  background-color: ${(props) => props.theme.backgroundColorSecondary};
   border-radius: 4px;
   text-align: start;
   padding: 4px 8px;
@@ -88,7 +88,7 @@ const Circle = styled.div<StyledProps>`
   cursor: pointer;
   width: 24px;
   height: 24px;
-  background: ${props => {
+  background: ${(props) => {
     const color = props.color;
     if (color === 'default') {
       return props.theme.backgroundColor;
@@ -99,7 +99,7 @@ const Circle = styled.div<StyledProps>`
   border-radius: 50%;
   margin: 4px;
   border: 2px solid
-    ${props => {
+    ${(props) => {
       const selected = props.selectedColor;
       const color = props.color;
       if (color === selected) {
@@ -109,7 +109,7 @@ const Circle = styled.div<StyledProps>`
       }
     }};
   :hover {
-    border: 2px solid ${props => props.theme.textColorPrimary};
+    border: 2px solid ${(props) => props.theme.textColorPrimary};
   }
 `;
 export default SelectColorPanel;

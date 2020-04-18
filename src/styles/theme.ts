@@ -23,8 +23,6 @@ export const lightTheme = {
 	scrollBarThumbColor: "#b0b0b0"
 };
 
-
-
 export const darkTheme = {
 	name: "dark",
 	textColorInverse: '#ffffff',

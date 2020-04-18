@@ -33,12 +33,8 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
     title: noteToBeEdited ? noteToBeEdited.title : '',
     content: noteToBeEdited ? noteToBeEdited.content : '',
     tags: noteToBeEdited ? noteToBeEdited.tags : [],
-    color: noteToBeEdited
-      ? noteToBeEdited?.color === 'default'
-        ? themeContext.backgroundColor
-        : noteToBeEdited.color
-      : themeContext.backgroundColor,
-    pinned: noteToBeEdited ? noteToBeEdited.pinned : false
+    color: noteToBeEdited ? noteToBeEdited?.color : themeContext.backgroundColor,
+    pinned: noteToBeEdited ? noteToBeEdited.pinned : false,
   });
 
   const cancelHandler = () => {
@@ -59,25 +55,25 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
   };
 
   const selectColor = (colorCode: string) => {
-    setNote(prevState => ({
+    setNote((prevState) => ({
       ...prevState,
-      color: colorCode
+      color: colorCode,
     }));
   };
   const addTag = (list: string[]) => {
-    setNote(prevState => ({
+    setNote((prevState) => ({
       ...prevState,
-      tags: list
+      tags: list,
     }));
   };
 
   return (
-    <Modal onKeyDown={e => (e.key === 'Escape' ? cancelHandler() : null)} tabIndex={0}>
+    <Modal onKeyDown={(e) => (e.key === 'Escape' ? cancelHandler() : null)} tabIndex={0}>
       <TakeNoteContainer bgColor={note.color}>
         <div>
           <NewNoteInput color={note.color} setNote={setNote} note={note}></NewNoteInput>
           <TagListContainer>
-            {note.tags.map(e => {
+            {note.tags.map((e) => {
               return (
                 <TagTextContainer key={e}>
                   <TagText>{e}</TagText>
@@ -131,7 +127,7 @@ const TakeNoteContainer = styled.div<styleProps>`
     flex-direction: column;
     overflow-x: hidden;
     justify-content: space-between;
-    background: ${props => props.bgColor};
+    background: ${(props) => props.bgColor};
     height: 100%;
     width: 100%;
     opacity: 1;
@@ -143,7 +139,7 @@ const TakeNoteContainer = styled.div<styleProps>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: ${props => props.bgColor};
+  background: ${(props) => (props.bgColor === 'default' ? props.theme.backgroundColor : props.bgColor)};
   height: 40%;
   width: 60%;
   padding: 16px;
@@ -184,7 +180,7 @@ const SaveButton = styled.button`
   }
   height: 24px;
   background: #364f6b;
-  color: ${props => props.theme.textColorInverse};
+  color: ${(props) => props.theme.textColorInverse};
   border: 0px;
   font-size: 13px;
   font-weight: 500;
@@ -199,8 +195,8 @@ const SaveButton = styled.button`
 `;
 const CancelButton = styled.button`
   text-align: center;
-  background: ${props => props.theme.warningColor};
-  color: ${props => props.theme.textColorInverse};
+  background: ${(props) => props.theme.warningColor};
+  color: ${(props) => props.theme.textColorInverse};
   border: 0px;
   font-size: 13px;
   font-weight: 500;
@@ -234,7 +230,7 @@ const TagTextContainer = styled.div`
 `;
 const TagText = styled.div`
   user-select: none;
-  color: ${props => props.theme.textColorSecondary};
+  color: ${(props) => props.theme.textColorSecondary};
   font-size: 14px;
   font-weight: 500;
   text-overflow: ellipsis;

@@ -8,15 +8,9 @@ type Props = {
   setSelectedNoteList: React.Dispatch<React.SetStateAction<string[]>>;
   ref: React.MutableRefObject<Map<any, any>>;
 };
-type BoxContainerProps = {
+type StyledBoxContainer = {
   color: string;
   selected: boolean;
-};
-type SelectNoteButtonProps = {
-  selected: boolean;
-};
-type PinButtonProps = {
-  pinned: boolean;
 };
 
 const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => {
@@ -51,29 +45,29 @@ const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => 
       <StyledNotesListItem>
         <NoteHeader>
           <SelectNoteButton onClick={(e) => selectNoteHandler(e)} selected={selected}></SelectNoteButton>
-          <NoteTitle>
+          <NoteTitle color={color}>
             <span>{title}</span>
           </NoteTitle>
           <PinButton onClick={(e) => pinNoteHandler(e)} pinned={pinned}></PinButton>
         </NoteHeader>
-        <NoteContent>
+        <NoteContent color={color}>
           <span>{content}</span>
         </NoteContent>
         <TagList>
           {tags[0] && (
             <TagTextContainer>
-              <TagText>{tags[0]}</TagText>
+              <TagText color={color}>{tags[0]}</TagText>
             </TagTextContainer>
           )}
 
           {tags[1] && (
             <TagTextContainer>
-              <TagText>{tags[1]}</TagText>
+              <TagText color={color}>{tags[1]}</TagText>
             </TagTextContainer>
           )}
           {tags.length > 2 && (
             <TagTextBox>
-              <TagText>+{tags.length - 2}</TagText>
+              <TagText color={color}>+{tags.length - 2}</TagText>
             </TagTextBox>
           )}
         </TagList>
@@ -81,6 +75,22 @@ const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => 
     </BoxContainer>
   );
 });
+
+type SelectNoteButtonProps = {
+  selected: boolean;
+};
+type StyledPinButtonProps = {
+  pinned: boolean;
+};
+type StyledNoteContentProps = {
+  color: string;
+};
+type StyledNoteTitleProps = {
+  color: string;
+};
+type StyledTagTextProps = {
+  color: string;
+};
 
 const NoteHeader = styled.div`
   display: flex;
@@ -107,7 +117,7 @@ const SelectNoteButton = styled.div<SelectNoteButtonProps>`
   }
 `;
 
-const PinButton = styled.div<PinButtonProps>`
+const PinButton = styled.div<StyledPinButtonProps>`
   visibility: ${(props) => (props.pinned ? 'visible' : 'hidden')};
   user-select: none;
   background-size: 24px 24px;
@@ -130,8 +140,8 @@ const PinButton = styled.div<PinButtonProps>`
   top: -10px;
 `;
 
-const NoteTitle = styled.div`
-  color: ${(props) => props.theme.textColorPrimary};
+const NoteTitle = styled.div<StyledNoteTitleProps>`
+  color: ${(props) => (props.color === 'default' ? props.theme.textColorPrimary : props.theme.textColorInverse)};
   text-align: start;
   font-weight: 600;
   width: 100%;
@@ -141,7 +151,7 @@ const NoteTitle = styled.div`
   height: 100%;
 `;
 
-const BoxContainer = styled.div<BoxContainerProps>`
+const BoxContainer = styled.div<StyledBoxContainer>`
   @media (max-width: 900px) {
     width: 100%;
     height: 100%;
@@ -153,7 +163,8 @@ const BoxContainer = styled.div<BoxContainerProps>`
   border: 1px solid ${(props) => (props.selected ? props.theme.colors.lightBlue : props.theme.borderColor)};
   border-radius: 4px;
   background: ${(props) => props.color};
-  transition: opacity 190ms linear;
+  transition: all 190ms linear;
+
   cursor: pointer;
   &:hover {
     ${PinButton} {
@@ -164,6 +175,8 @@ const BoxContainer = styled.div<BoxContainerProps>`
       opacity: 1;
     }
     border: 1px solid ${(props) => (props.selected ? props.theme.colors.lightBlue : props.theme.textColorPrimary)};
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6), 0 1px 3px 1px rgba(0, 0, 0, 0.302);
   }
 `;
 
@@ -179,8 +192,8 @@ const StyledNotesListItem = styled.div`
   padding-bottom: 8px;
 `;
 
-const NoteContent = styled.div`
-  color: ${(props) => props.theme.textColorPrimary};
+const NoteContent = styled.div<StyledNoteContentProps>`
+  color: ${(props) => (props.color === 'default' ? props.theme.textColorPrimary : props.theme.textColorInverse)};
   text-align: start;
   margin: 8px 0px;
   width: 100%;
@@ -218,9 +231,9 @@ const TagTextContainer = styled.div`
   align-items: center;
   margin: 4px 2px;
 `;
-const TagText = styled.div`
+const TagText = styled.div<StyledTagTextProps>`
   user-select: none;
-  color: ${(props) => props.theme.textColorSecondary};
+  color: ${(props) => (props.color === 'default' ? props.theme.textColorPrimary : props.theme.textColorInverse)};
   font-size: 14px;
   max-width: 24ch;
   overflow: hidden;
