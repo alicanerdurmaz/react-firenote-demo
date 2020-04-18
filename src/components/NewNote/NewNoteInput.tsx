@@ -59,7 +59,7 @@ const TitleInput = styled.div<styleProps>`
     resize: none;
     width: 100%;
     height: auto;
-    background: ${(props) => props.bgColor};
+    background: ${(props) => (props.bgColor === 'default' ? props.theme.backgroundColor : props.bgColor)};
     color: ${(props) => props.theme.textColorPrimary};
     font-size: 16px;
     overflow: hidden;
@@ -76,7 +76,7 @@ const ContentInput = styled.div<styleProps>`
     resize: none;
     font-size: 16px;
     width: 100%;
-    background: ${(props) => props.bgColor};
+    background: ${(props) => (props.bgColor === 'default' ? props.theme.backgroundColor : props.bgColor)};
     color: ${(props) => props.theme.textColorPrimary};
   }
   textarea::-webkit-scrollbar-track {
