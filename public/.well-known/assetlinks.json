@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.firenote.app",
+      "sha256_cert_fingerprints": [
+        "89:AE:B1:EF:66:67:59:4C:48:61:72:DE:B8:6C:25:6D:1F:12:8C:C7:FA:12:66:E4:9E:9D:F7:F3:16:C7:45:89"
+      ]
+    }
+  }
+]
