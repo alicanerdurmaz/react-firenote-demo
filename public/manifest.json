@@ -18,7 +18,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "https://alicanerdurmaz.github.io/react-firenote-demo/",
+  "start_url": "https://firenote.netlify.app",
   "display": "standalone",
   "theme_color": "#202124",
   "background_color": "#202124"
