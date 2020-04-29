@@ -23,7 +23,6 @@
     "styled-components": "^5.0.1",
     "typescript": "~3.7.2"
   },
-  "homepage": "https://alicanerdurmaz.github.io/react-firenote-demo",
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
