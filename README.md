@@ -11,6 +11,6 @@
 - Firebase 🔥
 - Styed Components 💅
 
-🚀 [Live Demo](https://alicanerdurmaz.github.io/react-firenote-demo/)
+🚀 [Live Demo](https://firenote.netlify.app/)
 
 ![screenshot](screenshot.png)
