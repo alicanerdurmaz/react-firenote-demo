@@ -20,9 +20,7 @@ const Notes = ({ setShowNewNoteModal, setNoteToBeEdited }: INotes) => {
     setShowNewNoteModal(true);
     setNoteToBeEdited(obj);
   };
-  useEffect(() => {
-    console.log(notesList);
-  }, [notesList]);
+  useEffect(() => {}, [notesList]);
   const renderPinnedList = () => {
     const pinnedList = notesList.filter((e) => e.pinned);
     return pinnedList.length > 0 ? (

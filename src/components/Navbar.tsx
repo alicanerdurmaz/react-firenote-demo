@@ -37,7 +37,6 @@ const Navbar = ({ setLeftMenuOpen, setTheme }: Props) => {
     setSettingsOpen((prevState) => !prevState);
   };
   const changeThemeButtonHandler = () => {
-    console.log(themeContext.name);
     if (themeContext.name === 'dark') {
       localStorage.setItem('theme', 'light');
       setTheme('light');

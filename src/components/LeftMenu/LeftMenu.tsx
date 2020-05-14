@@ -22,7 +22,6 @@ const LeftSideMenu: React.FC<Props> = ({ leftMenuOpen, setLeftMenuOpen }: Props)
     };
 
     function handleUserKeyPress(e: KeyboardEvent) {
-      console.log('worked');
       if (leftMenuOpen && e.key === 'Escape') {
         setLeftMenuOpen(false);
       }

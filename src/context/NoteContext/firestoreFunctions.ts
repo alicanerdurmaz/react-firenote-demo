@@ -25,9 +25,6 @@ export const firestoreAddNote = (data: Data) => {
 			words: wordsParser(data.content, data.title),
 			pinned: false
 		})
-		.then(function (docRef) {
-			console.log('Document written with ID: ', docRef.id);
-		})
 		.catch(function (error) {
 			console.error('Error adding document: ', error);
 		});
