@@ -1,71 +1,71 @@
-import React, { useState, useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components/macro';
+import React, { useState, useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components/macro'
 
-import { INote } from '../../context/NoteContext/noteTypes';
-import { useAuthContext } from '../../context/AuthContext';
-import SelectColorPanel from './SelectColorPanel';
-import SelectTagPanel from './SelectTagPanel';
-import { firestoreAddNote, firestoreUpdateNote } from '../../context/NoteContext/firestoreFunctions';
-import NewNoteInput from './NewNoteInput';
+import { INote } from '../../context/NoteContext/noteTypes'
+import { useAuthContext } from '../../context/AuthContext'
+import SelectColorPanel from './SelectColorPanel'
+import SelectTagPanel from './SelectTagPanel'
+import { firestoreAddNote, firestoreUpdateNote } from '../../context/NoteContext/firestoreFunctions'
+import NewNoteInput from './NewNoteInput'
 
 type Props = {
-  noteToBeEdited: INote | null;
-  setNoteToBeEdited: React.Dispatch<React.SetStateAction<INote | null>>;
-  setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>;
-};
+  noteToBeEdited: INote | null
+  setNoteToBeEdited: React.Dispatch<React.SetStateAction<INote | null>>
+  setShowNewNoteModal: React.Dispatch<React.SetStateAction<boolean>>
+}
 type styleProps = {
-  bgColor: string;
-};
+  bgColor: string
+}
 
 type Notes = {
-  title: string;
-  content: string;
-  tags: string[];
-  color: string;
-  pinned: boolean;
-};
+  title: string
+  content: string
+  tags: string[]
+  color: string
+  pinned: boolean
+}
 
 const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Props) => {
-  const themeContext = useContext(ThemeContext);
-  const { currentUser } = useAuthContext();
+  const themeContext = useContext(ThemeContext)
+  const { currentUser } = useAuthContext()
 
   const [note, setNote] = useState<Notes>({
     title: noteToBeEdited ? noteToBeEdited.title : '',
     content: noteToBeEdited ? noteToBeEdited.content : '',
     tags: noteToBeEdited ? noteToBeEdited.tags : [],
-    color: noteToBeEdited ? noteToBeEdited?.color : themeContext.backgroundColor,
+    color: noteToBeEdited ? noteToBeEdited?.color : 'default',
     pinned: noteToBeEdited ? noteToBeEdited.pinned : false,
-  });
+  })
 
   const cancelHandler = () => {
-    setShowNewNoteModal(false);
-    setNoteToBeEdited(null);
-  };
+    setShowNewNoteModal(false)
+    setNoteToBeEdited(null)
+  }
 
   const saveNoteToFirebase = () => {
     if (!currentUser) {
-      return;
+      return
     } else if (note.title.length < 1 || note.content.length < 1) {
-      return;
+      return
     } else {
-      noteToBeEdited ? firestoreUpdateNote(note, noteToBeEdited.uid) : firestoreAddNote(note);
-      setShowNewNoteModal(false);
-      setNoteToBeEdited(null);
+      noteToBeEdited ? firestoreUpdateNote(note, noteToBeEdited.uid) : firestoreAddNote(note)
+      setShowNewNoteModal(false)
+      setNoteToBeEdited(null)
     }
-  };
+  }
 
   const selectColor = (colorCode: string) => {
     setNote((prevState) => ({
       ...prevState,
       color: colorCode,
-    }));
-  };
+    }))
+  }
   const addTag = (list: string[]) => {
     setNote((prevState) => ({
       ...prevState,
       tags: list,
-    }));
-  };
+    }))
+  }
 
   return (
     <Modal onKeyDown={(e) => (e.key === 'Escape' ? cancelHandler() : null)} tabIndex={0}>
@@ -78,7 +78,7 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
                 <TagTextContainer key={e}>
                   <TagText>{e}</TagText>
                 </TagTextContainer>
-              );
+              )
             })}
           </TagListContainer>
         </div>
@@ -94,8 +94,8 @@ const NewNote = ({ setShowNewNoteModal, noteToBeEdited, setNoteToBeEdited }: Pro
         </BottomBar>
       </TakeNoteContainer>
     </Modal>
-  );
-};
+  )
+}
 
 const Modal = styled.div`
   @media (max-width: 700px) {
@@ -119,7 +119,7 @@ const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const TakeNoteContainer = styled.div<styleProps>`
   @media (max-width: 700px) {
@@ -143,7 +143,7 @@ const TakeNoteContainer = styled.div<styleProps>`
   height: 40%;
   width: 60%;
   padding: 16px;
-`;
+`
 
 const BottomBar = styled.div`
   width: 100%;
@@ -151,7 +151,7 @@ const BottomBar = styled.div`
   padding-bottom: 8px;
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const ButtonGroupOne = styled.div`
   align-self: flex-start;
@@ -162,7 +162,7 @@ const ButtonGroupOne = styled.div`
   @media (min-width: 700px) {
     justify-content: flex-start;
   }
-`;
+`
 const ButtonGroupTwo = styled.div`
   align-self: flex-end;
   flex: 0.4;
@@ -172,7 +172,7 @@ const ButtonGroupTwo = styled.div`
     justify-content: flex-end;
     padding-right: 16px;
   }
-`;
+`
 
 const SaveButton = styled.button`
   @media (min-width: 700px) {
@@ -192,7 +192,7 @@ const SaveButton = styled.button`
   &:active {
     transform: scale(0.9);
   }
-`;
+`
 const CancelButton = styled.button`
   text-align: center;
   background: ${(props) => props.theme.warningColor};
@@ -207,7 +207,7 @@ const CancelButton = styled.button`
   &:active {
     transform: scale(0.9);
   }
-`;
+`
 
 const TagListContainer = styled.div`
   cursor: pointer;
@@ -215,7 +215,7 @@ const TagListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   -webkit-tap-highlight-color: transparent;
-`;
+`
 const TagTextContainer = styled.div`
   user-select: none;
   min-width: 35px;
@@ -227,7 +227,7 @@ const TagTextContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 4px 2px;
-`;
+`
 const TagText = styled.div`
   user-select: none;
   color: ${(props) => props.theme.textColorSecondary};
@@ -236,6 +236,6 @@ const TagText = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 20px;
-`;
+`
 
-export default NewNote;
+export default NewNote

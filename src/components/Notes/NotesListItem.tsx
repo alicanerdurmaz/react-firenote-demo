@@ -1,45 +1,46 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import styled from 'styled-components/macro';
-import { INote } from '../../context/NoteContext/noteTypes';
-import { fireStorePinTest } from '../../context/NoteContext/firestoreFunctions';
+import React, { useState, forwardRef, useImperativeHandle } from 'react'
+import styled from 'styled-components/macro'
+import { INote } from '../../context/NoteContext/noteTypes'
+import { fireStorePinTest } from '../../context/NoteContext/firestoreFunctions'
 
 type Props = {
-  note: INote;
-  setSelectedNoteList: React.Dispatch<React.SetStateAction<string[]>>;
-  ref: React.MutableRefObject<Map<any, any>>;
-};
+  note: INote
+  setSelectedNoteList: React.Dispatch<React.SetStateAction<string[]>>
+  ref: React.MutableRefObject<Map<any, any>>
+}
 type StyledBoxContainer = {
-  color: string;
-  selected: boolean;
-};
+  color: string
+  selected: boolean
+}
 
 const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => {
-  const { uid, color, content, tags, title, pinned } = note;
-  const [selected, setSelected] = useState(false);
+  const { uid, color, content, tags, title, pinned } = note
+
+  const [selected, setSelected] = useState(false)
 
   const pinNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
-    fireStorePinTest(!pinned, uid);
-  };
+    e.stopPropagation()
+    fireStorePinTest(!pinned, uid)
+  }
 
   const selectNoteHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
+    e.stopPropagation()
     if (selected) {
-      setSelectedNoteList((prevState) => prevState.filter((e) => e !== uid));
+      setSelectedNoteList((prevState) => prevState.filter((e) => e !== uid))
     } else {
-      setSelectedNoteList((prevState) => [...prevState, uid]);
+      setSelectedNoteList((prevState) => [...prevState, uid])
     }
 
-    setSelected(!selected);
-  };
+    setSelected(!selected)
+  }
 
   useImperativeHandle(ref, () => ({
     unSelect() {
       if (selected) {
-        setSelected(false);
+        setSelected(false)
       }
     },
-  }));
+  }))
   return (
     <BoxContainer color={color} selected={selected}>
       <StyledNotesListItem>
@@ -73,30 +74,30 @@ const NotesListItem = forwardRef(({ note, setSelectedNoteList }: Props, ref) => 
         </TagList>
       </StyledNotesListItem>
     </BoxContainer>
-  );
-});
+  )
+})
 
 type SelectNoteButtonProps = {
-  selected: boolean;
-};
+  selected: boolean
+}
 type StyledPinButtonProps = {
-  pinned: boolean;
-};
+  pinned: boolean
+}
 type StyledNoteContentProps = {
-  color: string;
-};
+  color: string
+}
 type StyledNoteTitleProps = {
-  color: string;
-};
+  color: string
+}
 type StyledTagTextProps = {
-  color: string;
-};
+  color: string
+}
 
 const NoteHeader = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-`;
+`
 
 const SelectNoteButton = styled.div<SelectNoteButtonProps>`
   background: ${(props) => props.theme.backgroundColorSecondary};
@@ -115,7 +116,7 @@ const SelectNoteButton = styled.div<SelectNoteButtonProps>`
   &:hover {
     transform: scale(1.3);
   }
-`;
+`
 
 const PinButton = styled.div<StyledPinButtonProps>`
   visibility: ${(props) => (props.pinned ? 'visible' : 'hidden')};
@@ -138,7 +139,7 @@ const PinButton = styled.div<StyledPinButtonProps>`
   position: absolute;
   right: -10px;
   top: -10px;
-`;
+`
 
 const NoteTitle = styled.div<StyledNoteTitleProps>`
   color: ${(props) => (props.color === 'default' ? props.theme.textColorPrimary : props.theme.textColorInverse)};
@@ -149,7 +150,7 @@ const NoteTitle = styled.div<StyledNoteTitleProps>`
   word-wrap: break-word;
   width: 100%;
   height: 100%;
-`;
+`
 
 const BoxContainer = styled.div<StyledBoxContainer>`
   @media (max-width: 900px) {
@@ -178,7 +179,7 @@ const BoxContainer = styled.div<StyledBoxContainer>`
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6), 0 1px 3px 1px rgba(0, 0, 0, 0.302);
   }
-`;
+`
 
 const StyledNotesListItem = styled.div`
   width: 100%;
@@ -190,7 +191,7 @@ const StyledNotesListItem = styled.div`
   align-items: flex-start;
   padding: 16px;
   padding-bottom: 8px;
-`;
+`
 
 const NoteContent = styled.div<StyledNoteContentProps>`
   color: ${(props) => (props.color === 'default' ? props.theme.textColorPrimary : props.theme.textColorInverse)};
@@ -207,7 +208,7 @@ const NoteContent = styled.div<StyledNoteContentProps>`
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-`;
+`
 
 const TagList = styled.div`
   cursor: pointer;
@@ -218,7 +219,7 @@ const TagList = styled.div`
   margin-left: 0px;
   margin-right: 0px;
   margin-bottom: 0px;
-`;
+`
 const TagTextContainer = styled.div`
   user-select: none;
   min-width: 35px;
@@ -230,7 +231,7 @@ const TagTextContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 4px 2px;
-`;
+`
 const TagText = styled.div<StyledTagTextProps>`
   user-select: none;
   color: ${(props) => (props.color === 'default' ? props.theme.textColorPrimary : props.theme.textColorInverse)};
@@ -240,10 +241,10 @@ const TagText = styled.div<StyledTagTextProps>`
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 20px;
-`;
+`
 const TagTextBox = styled(TagTextContainer)`
   border-radius: 2px;
   min-width: 15px;
-`;
+`
 
-export default NotesListItem;
+export default NotesListItem
