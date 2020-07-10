@@ -45,7 +45,7 @@ export const firestoreUpdateNote = (data: Data, id: string) => {
 }
 export const fireStorePinTest = (isPinned: boolean, uid: string) => {
 	firestore
-		.collection("DdAhaoSVldOjAViG6NzJOkuSebT2")
+		.collection(auth.currentUser!.uid)
 		.doc('notes')
 		.collection('notesCollection').doc(uid).update({
 			pinned: isPinned,
